@@ -7,7 +7,8 @@ paths:
   sender_lookup: config/sender_lookup.csv
   anonymised_export: data/interim/anonymised_export.txt
   anonymisation_warnings: data/interim/anonymisation_warnings.log
-  voice_notes_dir: data/raw/
+  voice_notes_dir: data/raw/voice_notes/
+  voice_notes_output: data/interim/voice_notes_transcribed.csv
   messages_interim: data/interim/messages.csv
   transcription_failures: data/interim/transcription_failures.log
   engagement_metrics: data/processed/engagement_metrics.csv
