@@ -2,6 +2,7 @@ data/raw/
 data/interim/
 data/processed/
 config/role_mapping.csv
+config/sender_lookup.csv
 .env
 __pycache__/
 .DS_Store

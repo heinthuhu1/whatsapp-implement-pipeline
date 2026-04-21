@@ -6,6 +6,9 @@ if [ -z "${OPENAI_API_KEY:-}" ]; then
   exit 1
 fi
 
+echo "==> [0/7] Anonymising raw export"
+python3 src/00_anonymise.py
+
 echo "==> [1/7] Parsing WhatsApp export"
 python src/01_parse.py
 

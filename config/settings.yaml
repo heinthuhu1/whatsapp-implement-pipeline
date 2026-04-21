@@ -1,8 +1,12 @@
 # Maseeha WhatsApp Pipeline Configuration
 
 paths:
-  input_file: data/raw/whatsapp_export.txt
+  raw_input_file: data/raw/whatsapp_export.txt
+  input_file: data/interim/anonymised_export.txt
   role_mapping: config/role_mapping.csv
+  sender_lookup: config/sender_lookup.csv
+  anonymised_export: data/interim/anonymised_export.txt
+  anonymisation_warnings: data/interim/anonymisation_warnings.log
   voice_notes_dir: data/raw/
   messages_interim: data/interim/messages.csv
   transcription_failures: data/interim/transcription_failures.log
@@ -120,6 +124,30 @@ peer_support_keywords:
   - proud
   - appreciate
   - thanks
+
+# Given names flagged (case-insensitive, standalone word) in message bodies
+# during anonymisation — flagged in warnings log for manual review, not auto-redacted.
+flag_names:
+  - Ahmed
+  - Ali
+  - Hassan
+  - Hussein
+  - Mohammad
+  - Muhammad
+  - Omar
+  - Usman
+  - Fatima
+  - Ayesha
+  - Zainab
+  - Maryam
+  - Abdullah
+  - Ibrahim
+  - Yusuf
+  - Bilal
+  - Tariq
+  - Imran
+  - Khalid
+  - Sajid
 
 silence_threshold_hours: 6
 rolling_window_days: 7
