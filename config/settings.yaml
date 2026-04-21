@@ -1,7 +1,15 @@
 # Maseeha WhatsApp Pipeline Configuration
 
+# Surnames / name variants not in sender_lookup but found in message bodies.
+# Each entry is redacted to [REDACTED] wherever it appears.
+name_aliases:
+  - Mehmood
+  - Nosheen
+  - Bibi
+  - Younas
+
 paths:
-  raw_input_file: data/raw/whatsapp_export.txt
+  raw_input_file: data/raw/WhatsApp_Chat_with_MASEEHA_AMBULANCE.txt
   input_file: data/interim/anonymised_export.txt
   role_mapping: config/role_mapping.csv
   sender_lookup: config/sender_lookup.csv
@@ -20,18 +28,18 @@ paths:
 
 # Phase date boundaries (placeholder dates — update for your study)
 phases:
-  - name: baseline
+  - name: "2023"
+    start: "2023-01-01"
+    end: "2023-12-31"
+  - name: "2024"
     start: "2024-01-01"
-    end: "2024-03-31"
-  - name: pilot
-    start: "2024-04-01"
-    end: "2024-06-30"
-  - name: rollout
-    start: "2024-07-01"
-    end: "2024-09-30"
-  - name: sustainment
-    start: "2024-10-01"
     end: "2024-12-31"
+  - name: "2025"
+    start: "2025-01-01"
+    end: "2025-12-31"
+  - name: "2026"
+    start: "2026-01-01"
+    end: "2026-12-31"
 
 # Milestone dates (used for triangulation)
 milestones:

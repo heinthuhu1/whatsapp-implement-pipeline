@@ -8,7 +8,7 @@ import pandas as pd
 import yaml
 
 TIMESTAMP_RE = re.compile(
-    r"^\[?(\d{1,2}/\d{1,2}/\d{2,4}),\s(\d{1,2}:\d{2}(?::\d{2})?)\s?(?:AM|PM)?\]?\s?-\s"
+    r"^\[?(\d{1,2}/\d{1,2}/\d{2,4}),\s(\d{1,2}:\d{2}(?::\d{2})?)[\s ]?([AaPp][Mm])?\]?[\s ]?-\s"
 )
 
 MEDIA_PATTERNS = {
@@ -29,16 +29,22 @@ def load_settings(path: str = "config/settings.yaml") -> dict:
         return yaml.safe_load(f)
 
 
-def parse_timestamp(date_str: str, time_str: str) -> pd.Timestamp:
-    for fmt in ("%d/%m/%y %I:%M %p", "%d/%m/%Y %I:%M %p",
+def parse_timestamp(date_str: str, time_str: str, ampm: str | None = None) -> pd.Timestamp:
+    dt_str = f"{date_str} {time_str} {ampm.upper()}" if ampm else f"{date_str} {time_str}"
+    if ampm:
+        fmts = ("%d/%m/%y %I:%M %p", "%d/%m/%Y %I:%M %p",
                 "%m/%d/%y %I:%M %p", "%m/%d/%Y %I:%M %p",
-                "%d/%m/%y %H:%M", "%d/%m/%Y %H:%M",
-                "%d/%m/%y %H:%M:%S", "%d/%m/%Y %H:%M:%S"):
+                "%d/%m/%y %I:%M:%S %p", "%d/%m/%Y %I:%M:%S %p")
+    else:
+        fmts = ("%d/%m/%y %H:%M", "%d/%m/%Y %H:%M",
+                "%d/%m/%y %H:%M:%S", "%d/%m/%Y %H:%M:%S",
+                "%m/%d/%y %H:%M", "%m/%d/%Y %H:%M")
+    for fmt in fmts:
         try:
-            return pd.to_datetime(f"{date_str} {time_str}", format=fmt)
+            return pd.to_datetime(dt_str, format=fmt)
         except ValueError:
             continue
-    return pd.to_datetime(f"{date_str} {time_str}", errors="coerce")
+    return pd.to_datetime(dt_str, errors="coerce")
 
 
 def classify_message(text: str) -> str:
@@ -65,9 +71,9 @@ def parse_whatsapp_export(text: str) -> pd.DataFrame:
         if m:
             if current:
                 rows.append(current)
-            date_str, time_str = m.group(1), m.group(2)
+            date_str, time_str, ampm = m.group(1), m.group(2), m.group(3)
             rest = raw_line[m.end():]
-            ts = parse_timestamp(date_str, time_str)
+            ts = parse_timestamp(date_str, time_str, ampm)
             if is_system_message(rest):
                 current = {
                     "timestamp": ts, "sender_code": None, "message": rest.strip(),
