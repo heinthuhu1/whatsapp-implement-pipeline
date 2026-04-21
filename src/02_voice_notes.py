@@ -1,8 +1,10 @@
 """Transcribe and translate .opus voice notes as a parallel dataset via OpenAI Whisper."""
 from __future__ import annotations
 
+import io
 import os
 import re
+import subprocess
 import time
 from datetime import datetime, date
 from pathlib import Path
@@ -54,17 +56,28 @@ def get_duration(audio_path: Path) -> float | None:
         return None
 
 
+def _to_ogg_bytes(audio_path: Path) -> io.BytesIO:
+    """Convert any audio file to ogg/opus in-memory via ffmpeg."""
+    result = subprocess.run(
+        ["ffmpeg", "-i", str(audio_path), "-f", "ogg", "-acodec", "libopus", "pipe:1"],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True,
+    )
+    buf = io.BytesIO(result.stdout)
+    buf.name = audio_path.stem + ".ogg"
+    return buf
+
+
 def transcribe(client: OpenAI, audio_path: Path) -> str:
-    with open(audio_path, "rb") as f:
-        resp = client.audio.transcriptions.create(
-            model="whisper-1", file=f, language="ur"
-        )
+    buf = _to_ogg_bytes(audio_path)
+    resp = client.audio.transcriptions.create(
+        model="whisper-1", file=buf, language="ur"
+    )
     return resp.text
 
 
 def translate(client: OpenAI, audio_path: Path) -> str:
-    with open(audio_path, "rb") as f:
-        resp = client.audio.translations.create(model="whisper-1", file=f)
+    buf = _to_ogg_bytes(audio_path)
+    resp = client.audio.translations.create(model="whisper-1", file=buf)
     return resp.text
 
 
