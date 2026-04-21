@@ -1,0 +1,127 @@
+# Maseeha WhatsApp Pipeline Configuration
+
+paths:
+  input_file: data/raw/whatsapp_export.txt
+  role_mapping: config/role_mapping.csv
+  voice_notes_dir: data/raw/
+  messages_interim: data/interim/messages.csv
+  transcription_failures: data/interim/transcription_failures.log
+  engagement_metrics: data/processed/engagement_metrics.csv
+  network_metrics: data/processed/network_metrics.csv
+  network_graph: data/processed/network_edges.graphml
+  sentiment_metrics: data/processed/sentiment_metrics.csv
+  fidelity_metrics: data/processed/fidelity_metrics.csv
+  implementation_summary: data/processed/implementation_summary.csv
+
+# Phase date boundaries (placeholder dates — update for your study)
+phases:
+  - name: baseline
+    start: "2024-01-01"
+    end: "2024-03-31"
+  - name: pilot
+    start: "2024-04-01"
+    end: "2024-06-30"
+  - name: rollout
+    start: "2024-07-01"
+    end: "2024-09-30"
+  - name: sustainment
+    start: "2024-10-01"
+    end: "2024-12-31"
+
+# Milestone dates (used for triangulation)
+milestones:
+  training_start: "2024-03-15"
+  launch: "2024-04-01"
+  mid_review: "2024-07-15"
+  final_review: "2024-12-15"
+
+# Keyword lists (English + Urdu romanised)
+urgency_keywords:
+  - urgent
+  - emergency
+  - immediately
+  - asap
+  - now
+  - critical
+  - help
+  - jaldi
+  - foran
+  - abhi
+  - zaroori
+  - madad
+  - emergency hai
+
+hedging_keywords:
+  - maybe
+  - perhaps
+  - might
+  - possibly
+  - not sure
+  - i think
+  - shayad
+  - ho sakta hai
+  - lagta hai
+  - pata nahi
+
+toc_component_keywords:
+  training:
+    - training
+    - workshop
+    - refresher
+    - cpr
+    - drill
+    - tareeqa
+    - sikhaya
+  dispatch:
+    - dispatch
+    - call
+    - rescue
+    - ambulance
+    - pickup
+    - rawana
+  clinical_protocol:
+    - protocol
+    - triage
+    - vitals
+    - bp
+    - oxygen
+    - sop
+    - mareez
+  equipment:
+    - stretcher
+    - oxygen cylinder
+    - defibrillator
+    - kit
+    - saman
+    - equipment
+  supervision:
+    - supervisor
+    - incharge
+    - review
+    - checklist
+    - nigrani
+
+workaround_keywords:
+  - workaround
+  - instead
+  - bypass
+  - not working
+  - broken
+  - jugaar
+  - nahi chal raha
+  - kharab
+
+peer_support_keywords:
+  - well done
+  - good job
+  - shabash
+  - thank you
+  - shukriya
+  - proud
+  - appreciate
+  - thanks
+
+silence_threshold_hours: 6
+rolling_window_days: 7
+after_hours_start: 22
+after_hours_end: 6
