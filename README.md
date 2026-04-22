@@ -2,9 +2,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A general-purpose research pipeline for public health implementers. Turns a WhatsApp group-chat export into structured metrics for implementation science: engagement, social network analysis, sentiment, and fidelity to a Theory of Change (ToC).
+A general-purpose research pipeline for public health implementers. Turns a WhatsApp group-chat export into structured metrics for implementation science: engagement, social network analysis, sentiment, fidelity to a Theory of Change (ToC), and publication-ready figures.
 
-Originally developed for a Pakistani emergency ambulance programme. Designed to work with **any** WhatsApp group in **any** language.
+Designed to work with **any** WhatsApp group in **any** language.
 
 ---
 
@@ -14,10 +14,21 @@ Originally developed for a Pakistani emergency ambulance programme. Designed to 
 |---|---|
 | **Engagement metrics** | Who is active, when, how often — weekly trends, spikes, after-hours activity, response latency |
 | **Network analysis** | Who communicates with whom — centrality, information brokers, network density over time |
-| **Sentiment analysis** | Urgency, hedging, peer support rates — are people communicating with confidence? Is the group task-focused or supportive? |
-| **Fidelity metrics** | Are your Theory of Change components being discussed? Which components are strong or weak? |
-| **Implementation summary** | All metrics in one table, aligned to your programme milestones |
+| **Sentiment analysis** | Urgency, hedging, peer support rates — is the group task-focused or supportive? |
+| **Fidelity metrics** | Are your Theory of Change components being discussed? Which are strong or weak? |
+| **Implementation summary** | All metrics in one table by study phase |
 | **Case reports** | If your group logs structured incident/case data, these are automatically extracted |
+| **Figures** | 5 publication-ready figures + summary table, ready for a methods paper |
+
+---
+
+## Sample outputs (Jheeng community health case study)
+
+| Figure | Preview |
+|---|---|
+| Weekly engagement | ![Fig 1](docs/sample_fig1.png) |
+
+> Full sample figures are in [`docs/`](docs/).
 
 ---
 
@@ -37,8 +48,8 @@ Originally developed for a Pakistani emergency ambulance programme. Designed to 
 
 **Step 1 — Download the pipeline**
 ```bash
-git clone https://github.com/heinthuhu1/maseeha-whatsapp-pipeline.git
-cd maseeha-whatsapp-pipeline
+git clone https://github.com/heinthuhu1/whatsapp-implement-pipeline.git
+cd whatsapp-implement-pipeline
 ```
 
 **Step 2 — Run setup**
@@ -60,8 +71,7 @@ cp /path/to/AUD-*.opus data/raw/voice_notes/
 **Step 4 — Configure for your study**
 
 Open `config/settings.yaml` and set:
-- Your **phase dates** (baseline, implementation, sustainment — or whatever your study design uses)
-- Your **milestone dates** (training start, launch, reviews)
+- Your **phase dates** — by year, or named phases like baseline/implementation/sustainment
 - Your **Theory of Change keywords** — terms in any language that signal each component of your intervention
 
 **Step 5 — Run**
@@ -72,7 +82,7 @@ export OPENAI_API_KEY=sk-...
 bash run_pipeline.sh
 ```
 
-Results appear in `data/processed/`.
+Results appear in `data/processed/` and figures in `data/processed/figures/`.
 
 ---
 
@@ -81,8 +91,18 @@ Results appear in `data/processed/`.
 All configuration is in `config/settings.yaml`. The file is fully commented — open it and follow the numbered steps inside.
 
 ### Phases
-Define as many phases as your study has. Names can be anything:
+Use calendar years for ongoing projects, or named phases for studies with defined periods:
 ```yaml
+# Year-based (for ongoing programmes)
+phases:
+  - name: "2024"
+    start: "2024-01-01"
+    end: "2024-12-31"
+  - name: "2025"
+    start: "2025-01-01"
+    end: "2025-12-31"
+
+# Or named phases (for studies with defined periods)
 phases:
   - name: baseline
     start: "2023-01-01"
@@ -90,6 +110,17 @@ phases:
   - name: implementation
     start: "2023-07-01"
     end: "2024-06-30"
+```
+
+### Milestones *(optional)*
+If your programme has fixed milestones (training start, launch, reviews), add them and they will be annotated on figures. Leave empty `{}` for ongoing projects with no fixed milestones:
+```yaml
+milestones: {}   # no milestones
+
+# Or:
+milestones:
+  training_start: "2024-01-01"
+  launch: "2024-03-01"
 ```
 
 ### Theory of Change keywords
@@ -108,7 +139,7 @@ toc_component_keywords:
 
 ### Role mapping *(optional but recommended)*
 Create `config/role_mapping.csv` to assign roles and sites to participants.
-Check `config/sender_lookup.csv` (generated after first run) to see which coded ID is which person, then fill in roles:
+Check `config/sender_lookup.csv` (generated after first run) to see which coded ID maps to which person, then fill in roles:
 ```csv
 sender_code,role,site
 P001,community health worker,district_a
@@ -131,6 +162,22 @@ P003,nurse,district_b
 | `data/processed/sentiment_metrics.csv` | Sentiment, urgency, hedging, peer support by phase |
 | `data/processed/fidelity_metrics.csv` | ToC component coverage and responsiveness |
 | `data/processed/implementation_summary.csv` | All metrics joined — ready for your paper |
+| `data/processed/figures/` | Publication-ready figures (Fig 1–5 + Table 1) |
+
+---
+
+## Figures produced
+
+Running `src/08_visualise.py` (or `bash run_pipeline.sh`) generates:
+
+| Figure | Description |
+|---|---|
+| `fig1_engagement.png` | Weekly message volume with phase shading and rolling mean |
+| `fig2_network.png` | Co-activity network side-by-side by phase (node size = degree, edge width = frequency) |
+| `fig3_sentiment.png` | Sentiment trend over time (panel A) + urgency and peer support by year (panel B) |
+| `fig4_fidelity.png` | Theory of Change fidelity heatmap — components × phases |
+| `fig5_case_reports.png` | Case report profile — top presenting complaints and patient gender split |
+| `table1_summary.png/csv` | Cross-phase summary of all pipeline outputs |
 
 ---
 
@@ -150,7 +197,7 @@ P003,nurse,district_b
 ├── data/
 │   ├── raw/               # Your WhatsApp export + voice notes (gitignored)
 │   ├── interim/           # Anonymised export, parsed messages (gitignored)
-│   └── processed/         # Final metric CSVs (gitignored)
+│   └── processed/         # Final metric CSVs + figures/ (gitignored)
 ├── config/
 │   ├── settings.yaml      # All configuration — start here
 │   ├── sender_lookup.csv  # Auto-generated: real names → coded IDs (gitignored)
@@ -158,16 +205,16 @@ P003,nurse,district_b
 ├── src/
 │   ├── 00_anonymise.py    # Replace names, redact phones and mentions
 │   ├── 01_parse.py        # Parse messages into structured CSV
-│   ├── 02_voice_notes.py  # Transcribe and translate voice notes
+│   ├── 02_voice_notes.py  # Transcribe and translate voice notes (Whisper API)
 │   ├── 03_engagement.py   # Weekly engagement and activity metrics
 │   ├── 04_network.py      # Temporal co-activity network analysis
 │   ├── 05_sentiment.py    # Sentiment, urgency, hedging, peer support
 │   ├── 06_fidelity.py     # Theory of Change fidelity scoring
-│   └── 07_triangulation.py# Combine all metrics into summary table
+│   ├── 07_triangulation.py# Combine all metrics into summary table
+│   └── 08_visualise.py    # Publication-ready figures and summary table
 ├── tests/                 # Automated tests (pytest)
-├── notebooks/             # Analysis notebooks
 ├── setup.sh               # One-time setup
-├── run_pipeline.sh        # Run the full pipeline
+├── run_pipeline.sh        # Run the full pipeline (all 8 stages)
 └── requirements.txt
 ```
 
@@ -177,14 +224,15 @@ P003,nurse,district_b
 
 ```bash
 source venv/bin/activate
-python3 src/00_anonymise.py    # anonymise names and phone numbers
-python3 src/01_parse.py        # parse messages into CSV
-python3 src/02_voice_notes.py  # transcribe voice notes (needs OPENAI_API_KEY)
-python3 src/03_engagement.py   # engagement metrics
-python3 src/04_network.py      # network analysis
-python3 src/05_sentiment.py    # sentiment analysis
-python3 src/06_fidelity.py     # fidelity metrics
+python3 src/00_anonymise.py     # anonymise names and phone numbers
+python3 src/01_parse.py         # parse messages into CSV
+python3 src/02_voice_notes.py   # transcribe voice notes (needs OPENAI_API_KEY)
+python3 src/03_engagement.py    # engagement metrics
+python3 src/04_network.py       # network analysis
+python3 src/05_sentiment.py     # sentiment analysis
+python3 src/06_fidelity.py      # fidelity metrics
 python3 src/07_triangulation.py # combine everything
+python3 src/08_visualise.py     # generate figures
 ```
 
 ## Running tests
@@ -200,4 +248,4 @@ pytest tests/ -v
 
 If you use this pipeline in your research, please cite:
 
-> WhatsApp Implementation Science Pipeline (2026). https://github.com/heinthuhu1/maseeha-whatsapp-pipeline
+> WhatsApp Implementation Science Pipeline (2026). https://github.com/heinthuhu1/whatsapp-implement-pipeline
