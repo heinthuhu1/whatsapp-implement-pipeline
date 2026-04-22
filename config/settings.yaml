@@ -1,15 +1,13 @@
-# Maseeha WhatsApp Pipeline Configuration
+# WhatsApp Implementation Science Pipeline — Configuration
+# -------------------------------------------------------
+# Copy this file and fill in your own values.
+# All paths are relative to the project root.
 
-# Surnames / name variants not in sender_lookup but found in message bodies.
-# Each entry is redacted to [REDACTED] wherever it appears.
-name_aliases:
-  - Mehmood
-  - Nosheen
-  - Bibi
-  - Younas
-
+# -----------------------------------------------------------
+# STEP 1: Point to your WhatsApp export file
+# -----------------------------------------------------------
 paths:
-  raw_input_file: data/raw/WhatsApp_Chat_with_MASEEHA_AMBULANCE.txt
+  raw_input_file: data/raw/whatsapp_export.txt   # rename your export to this
   input_file: data/interim/anonymised_export.txt
   role_mapping: config/role_mapping.csv
   sender_lookup: config/sender_lookup.csv
@@ -27,44 +25,50 @@ paths:
   fidelity_metrics: data/processed/fidelity_metrics.csv
   implementation_summary: data/processed/implementation_summary.csv
 
-# Phase date boundaries (placeholder dates — update for your study)
+# -----------------------------------------------------------
+# STEP 2: Define your study phases
+# Each phase needs a name, start date, and end date.
+# You can have as many phases as your study design requires.
+# Example below uses calendar years — adjust to your timeline.
+# -----------------------------------------------------------
 phases:
-  - name: "2023"
+  - name: baseline
     start: "2023-01-01"
     end: "2023-12-31"
-  - name: "2024"
+  - name: implementation
     start: "2024-01-01"
     end: "2024-12-31"
-  - name: "2025"
+  - name: sustainment
     start: "2025-01-01"
     end: "2025-12-31"
-  - name: "2026"
-    start: "2026-01-01"
-    end: "2026-12-31"
 
-# Milestone dates (used for triangulation)
+# -----------------------------------------------------------
+# STEP 3: Set your programme milestone dates
+# These are annotated on output charts and the summary table.
+# -----------------------------------------------------------
 milestones:
-  training_start: "2024-03-15"
-  launch: "2024-04-01"
-  mid_review: "2024-07-15"
-  final_review: "2024-12-15"
+  training_start: "2024-01-01"    # when training began
+  launch: "2024-03-01"            # when the intervention launched
+  mid_review: "2024-07-01"        # mid-point review
+  final_review: "2024-12-01"      # end-of-study review
 
-# Keyword lists (English + Urdu romanised)
+# -----------------------------------------------------------
+# STEP 4: Customise keyword lists for your context
+# Add terms in any language your group uses.
+# These drive the sentiment and fidelity analyses.
+# -----------------------------------------------------------
+
+# Words that signal urgency or emergency
 urgency_keywords:
   - urgent
   - emergency
   - immediately
   - asap
-  - now
   - critical
   - help
-  - jaldi
-  - foran
-  - abhi
-  - zaroori
-  - madad
-  - emergency hai
+  - now
 
+# Words that signal uncertainty or hesitation
 hedging_keywords:
   - maybe
   - perhaps
@@ -72,94 +76,81 @@ hedging_keywords:
   - possibly
   - not sure
   - i think
-  - shayad
-  - ho sakta hai
-  - lagta hai
-  - pata nahi
 
+# Theory of Change components — add keywords relevant to YOUR intervention.
+# Each top-level key becomes a component in the fidelity analysis.
+# Rename, add, or remove components to match your ToC.
 toc_component_keywords:
   training:
     - training
     - workshop
     - refresher
-    - cpr
     - drill
-    - tareeqa
-    - sikhaya
-  dispatch:
+    - practice
+  coordination:
     - dispatch
     - call
     - rescue
-    - ambulance
     - pickup
-    - rawana
+    - respond
   clinical_protocol:
     - protocol
     - triage
     - vitals
-    - bp
-    - oxygen
     - sop
-    - mareez
+    - checklist
   equipment:
-    - stretcher
-    - oxygen cylinder
-    - defibrillator
-    - kit
-    - saman
     - equipment
+    - kit
+    - stretcher
+    - oxygen
+    - defibrillator
   supervision:
     - supervisor
     - incharge
     - review
-    - checklist
-    - nigrani
+    - monitor
+    - oversight
 
+# Words that suggest workarounds or implementation barriers
 workaround_keywords:
   - workaround
   - instead
   - bypass
   - not working
   - broken
-  - jugaar
-  - nahi chal raha
-  - kharab
+  - alternative
 
+# Words that signal peer support or positive recognition
 peer_support_keywords:
   - well done
   - good job
-  - shabash
   - thank you
-  - shukriya
   - proud
   - appreciate
   - thanks
+  - great work
 
-# Given names flagged (case-insensitive, standalone word) in message bodies
-# during anonymisation — flagged in warnings log for manual review, not auto-redacted.
-flag_names:
-  - Ahmed
-  - Ali
-  - Hassan
-  - Hussein
-  - Mohammad
-  - Muhammad
-  - Omar
-  - Usman
-  - Fatima
-  - Ayesha
-  - Zainab
-  - Maryam
-  - Abdullah
-  - Ibrahim
-  - Yusuf
-  - Bilal
-  - Tariq
-  - Imran
-  - Khalid
-  - Sajid
+# -----------------------------------------------------------
+# STEP 5 (optional): Anonymisation helpers
+# name_aliases — surnames or name variants found in message
+#   bodies but not in sender display names. Each will be
+#   replaced with [REDACTED] in the anonymised export.
+# flag_names — common given names to flag for manual review
+#   (they appear in the warnings log but are NOT auto-redacted).
+# -----------------------------------------------------------
+name_aliases: []
+  # - Smith
+  # - Johnson
 
-silence_threshold_hours: 6
-rolling_window_days: 7
-after_hours_start: 22
-after_hours_end: 6
+flag_names: []
+  # - James
+  # - Maria
+
+# -----------------------------------------------------------
+# Advanced settings (safe to leave as defaults)
+# -----------------------------------------------------------
+silence_threshold_hours: 6    # gap length that counts as a silence period
+rolling_window_days: 7        # rolling window for engagement trend lines
+after_hours_start: 22         # hour (24h) after-hours period starts
+after_hours_end: 6            # hour (24h) after-hours period ends

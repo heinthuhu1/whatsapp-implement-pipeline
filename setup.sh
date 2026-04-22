@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-time setup script. Run once before using the pipeline.
+# One-time setup script. Run this once before using the pipeline.
 set -euo pipefail
 
 echo "==> Checking Python 3.9+"
@@ -37,8 +37,9 @@ echo " Setup complete!"
 echo "========================================"
 echo ""
 echo "Next steps:"
-echo "  1. Copy your WhatsApp export into:  data/raw/WhatsApp_Chat_with_MASEEHA_AMBULANCE.txt"
-echo "  2. Copy your .opus voice notes into: data/raw/voice_notes/"
-echo "  3. Set your OpenAI API key:          export OPENAI_API_KEY=sk-..."
-echo "  4. Run the pipeline:                 bash run_pipeline.sh"
+echo "  1. Copy your WhatsApp export into:   data/raw/whatsapp_export.txt"
+echo "  2. Copy your .opus voice notes into: data/raw/voice_notes/  (optional)"
+echo "  3. Edit config/settings.yaml:        set your phases, milestones, and keywords"
+echo "  4. Set your OpenAI API key:          export OPENAI_API_KEY=sk-...  (optional, for voice notes)"
+echo "  5. Run the pipeline:                 bash run_pipeline.sh"
 echo ""

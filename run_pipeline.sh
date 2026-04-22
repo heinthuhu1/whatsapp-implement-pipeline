@@ -19,14 +19,14 @@ fi
 
 echo ""
 echo "========================================"
-echo " Maseeha WhatsApp Pipeline"
+echo " WhatsApp Implementation Science Pipeline"
 echo "========================================"
 echo ""
 
 echo "==> [00/07] Anonymising raw export"
 python3 src/00_anonymise.py
 
-echo "==> [01/07] Parsing WhatsApp export"
+echo "==> [01/07] Parsing messages"
 python3 src/01_parse.py
 
 if [ "$SKIP_VOICE_NOTES" -eq 0 ]; then
