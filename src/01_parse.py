@@ -106,21 +106,36 @@ CASE_FIELD_ALIASES = {
     "case_no": re.compile(r"^case\s*no\.?$", re.IGNORECASE),
     "date": re.compile(r"^date$", re.IGNORECASE),
     "gender": re.compile(r"^gender$", re.IGNORECASE),
-    "initial_complaint": re.compile(r"^initial\s*complaint$", re.IGNORECASE),
-    "location": re.compile(r"^location(\s*transported\s*to)?$", re.IGNORECASE),
-    "time_patient_reached": re.compile(r"^time\s*patient\s*reached$", re.IGNORECASE),
+    "initial_complaint": re.compile(
+        r"^(initial\s*complaint|complaint)$", re.IGNORECASE
+    ),
+    "location": re.compile(
+        r"^(location(\s*transported\s*to)?|pickup\s*location)$", re.IGNORECASE
+    ),
+    "time_patient_reached": re.compile(
+        r"^(time\s*patient\s*reached|pickup\s*time)$", re.IGNORECASE
+    ),
     "hospital": re.compile(
-        r"^(name\s*of\s*hospital\s*transported\s*to|hospital\s*transported\s*to|transported\s*to)$",
+        r"^(name\s*of\s*hospital\s*transported\s*to|hospital\s*transported\s*to|transported\s*to|destination)$",
         re.IGNORECASE,
     ),
     "time_hospital_reached": re.compile(
-        r"^time\s*(hospital\s*)?(was\s*)?reached$", re.IGNORECASE
+        r"^(time\s*(hospital\s*)?(was\s*)?reached|arrival\s*time)$", re.IGNORECASE
     ),
-    "first_aid": re.compile(r"^first\s*aid\s*provided$", re.IGNORECASE),
-    "emp_personnel": re.compile(r"^emp\s*person(nel|al)?\s*(names?)?$", re.IGNORECASE),
+    "first_aid": re.compile(r"^first\s*aid(\s*provided)?$", re.IGNORECASE),
+    "emp_personnel": re.compile(
+        r"^(emp\s*person(nel|al)?\s*(names?)?|emp\s*personnel)$", re.IGNORECASE
+    ),
 }
 
-FIELD_LINE_RE = re.compile(r"^([A-Za-z][A-Za-z\s/\(\)\.]{1,45}):\s*(.*)")
+# Matches "Field: value", "Field. value", or "Field; value"
+FIELD_LINE_RE = re.compile(r"^([A-Za-z][A-Za-z\s/\(\)\.]{1,45})[:\.\;][ \t]*(.*)")
+
+# Matches "Case 87", "Case .103", "Case :133" — number on same line
+CASE_BARE_RE = re.compile(r"^\*?[Cc]ase\s*[:\.]?\s*(\d+)\s*$")
+
+# Matches "*Case no 65" or "Case no: 65" — number inline after "Case No"
+CASE_NO_INLINE_RE = re.compile(r"^\*?[Cc]ase\s*[Nn]o\.?\s*[:\.]?\s*(\d+)\s*$")
 
 
 def _canonical_field(label: str) -> str | None:
@@ -132,9 +147,10 @@ def _canonical_field(label: str) -> str | None:
 
 
 def parse_case_reports(messages_df: pd.DataFrame) -> pd.DataFrame:
-    """Extract structured case report fields from multi-line ambulance dispatch messages."""
+    """Extract structured case report fields from multi-line case report messages."""
     records = []
-    case_trigger = re.compile(r"case\s*no|🚑", re.IGNORECASE)
+    # trigger on "Case No", bare "Case 87" style, or ambulance emoji
+    case_trigger = re.compile(r"case\s*no|case\s*\.?\s*\d+|🚑", re.IGNORECASE)
 
     for _, row in messages_df.iterrows():
         msg = str(row.get("message", ""))
@@ -159,7 +175,20 @@ def parse_case_reports(messages_df: pd.DataFrame) -> pd.DataFrame:
         }
 
         for line in msg.splitlines():
-            line = line.strip()
+            line = line.lstrip('‎').strip()
+
+            # handle "*Case no 65" — number inline after "Case No"
+            inline = CASE_NO_INLINE_RE.match(line)
+            if inline and fields["case_no"] is None:
+                fields["case_no"] = inline.group(1)
+                continue
+
+            # handle "Case 87" / "Case .103" / "Case :133"
+            bare = CASE_BARE_RE.match(line)
+            if bare and fields["case_no"] is None:
+                fields["case_no"] = bare.group(1)
+                continue
+
             m = FIELD_LINE_RE.match(line)
             if not m:
                 continue
@@ -172,7 +201,21 @@ def parse_case_reports(messages_df: pd.DataFrame) -> pd.DataFrame:
         if fields["case_no"] or fields["initial_complaint"]:
             records.append(fields)
 
-    return pd.DataFrame(records)
+    df = pd.DataFrame(records)
+    if df.empty:
+        return df
+
+    # Deduplicate by case_no: keep the row with the most non-null fields
+    data_cols = ["date", "gender", "initial_complaint", "location",
+                 "time_patient_reached", "hospital", "time_hospital_reached",
+                 "first_aid", "emp_personnel"]
+    df["_completeness"] = df[data_cols].notna().sum(axis=1)
+    df = (df.sort_values("_completeness", ascending=False)
+            .drop_duplicates(subset=["case_no"], keep="first")
+            .drop(columns=["_completeness"])
+            .sort_values("timestamp")
+            .reset_index(drop=True))
+    return df
 
 
 def assign_phase(ts: pd.Timestamp, phases: list) -> str | None:
