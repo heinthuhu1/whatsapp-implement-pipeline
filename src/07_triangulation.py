@@ -12,13 +12,25 @@ def load_settings(path: str = "config/settings.yaml") -> dict:
         return yaml.safe_load(f)
 
 
+def _normalise_phase(s: pd.Series) -> pd.Series:
+    """Coerce phase to clean string: '2023.0' → '2023', 'full_period' → 'full_period'."""
+    def _clean(v):
+        try:
+            return str(int(float(v)))
+        except (ValueError, TypeError):
+            return str(v)
+    return s.map(_clean)
+
+
 def summarize_by_phase(df: pd.DataFrame, prefix: str) -> pd.DataFrame:
     if "phase" not in df.columns:
         return pd.DataFrame()
-    numeric = df.select_dtypes("number").columns
+    df = df.copy()
+    df["phase"] = _normalise_phase(df["phase"])
+    numeric = [c for c in df.select_dtypes("number").columns if c != "phase"]
     if len(numeric) == 0:
         return pd.DataFrame({"phase": df["phase"].dropna().unique()})
-    g = df.groupby("phase")[list(numeric)].mean().reset_index()
+    g = df.groupby("phase")[numeric].mean().reset_index()
     g.columns = ["phase"] + [f"{prefix}_{c}" for c in g.columns[1:]]
     return g
 
@@ -32,7 +44,13 @@ def main() -> None:
     sen = pd.read_csv(paths["sentiment_metrics"])
     fid = pd.read_csv(paths["fidelity_metrics"])
 
-    merged = pd.DataFrame({"phase": [p["name"] for p in settings["phases"]]})
+    # Collect all normalised phase values across datasets
+    all_phases: set = set()
+    for df in (eng, net, sen, fid):
+        if "phase" in df.columns:
+            all_phases.update(_normalise_phase(df["phase"].dropna()).unique())
+
+    merged = pd.DataFrame({"phase": sorted(all_phases)})
     for df, prefix in [(eng, "eng"), (net, "net"), (sen, "sen"), (fid, "fid")]:
         s = summarize_by_phase(df, prefix)
         if not s.empty:
