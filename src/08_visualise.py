@@ -367,8 +367,11 @@ def table_summary():
             r["Network density (Gini)"] = "—"
             r["Avg co-activity partners"] = "—"
 
-        # sentiment — try phase label first, fall back to year match
-        sent_p = sent[sent["phase"].astype(str) == str(phase)] if "phase" in sent.columns else pd.DataFrame()
+        # sentiment — normalise float phases (2024.0 → "2024") before matching
+        def _norm(v):
+            try: return str(int(float(v)))
+            except: return str(v)
+        sent_p = sent[sent["phase"].apply(_norm) == _norm(phase)] if "phase" in sent.columns else pd.DataFrame()
         def _fmt_sent(df):
             sm = df["sentiment_mean"].mean()
             ur = df["urgency_rate"].mean() * 100
