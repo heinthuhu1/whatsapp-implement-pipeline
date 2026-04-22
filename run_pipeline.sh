@@ -1,33 +1,58 @@
 #!/usr/bin/env bash
+# Run all pipeline stages in order.
+# Usage: bash run_pipeline.sh
 set -euo pipefail
 
-if [ -z "${OPENAI_API_KEY:-}" ]; then
-  echo "ERROR: OPENAI_API_KEY is not set. Export it before running the pipeline." >&2
-  exit 1
+# Activate virtual environment if it exists
+if [ -f "venv/bin/activate" ]; then
+  source venv/bin/activate
 fi
 
-echo "==> [0/7] Anonymising raw export"
+# Check for OpenAI key — only needed for stage 02 (voice notes)
+if [ -z "${OPENAI_API_KEY:-}" ]; then
+  echo "WARNING: OPENAI_API_KEY is not set."
+  echo "         Stage 02 (voice note transcription) will be skipped."
+  SKIP_VOICE_NOTES=1
+else
+  SKIP_VOICE_NOTES=0
+fi
+
+echo ""
+echo "========================================"
+echo " Maseeha WhatsApp Pipeline"
+echo "========================================"
+echo ""
+
+echo "==> [00/07] Anonymising raw export"
 python3 src/00_anonymise.py
 
-echo "==> [1/7] Parsing WhatsApp export"
-python src/01_parse.py
+echo "==> [01/07] Parsing WhatsApp export"
+python3 src/01_parse.py
 
-echo "==> [2/7] Transcribing voice notes"
-python src/02_voice_notes.py
+if [ "$SKIP_VOICE_NOTES" -eq 0 ]; then
+  echo "==> [02/07] Transcribing voice notes"
+  python3 src/02_voice_notes.py
+else
+  echo "==> [02/07] Skipping voice notes (no OPENAI_API_KEY)"
+fi
 
-echo "==> [3/7] Engagement metrics"
-python src/03_engagement.py
+echo "==> [03/07] Engagement metrics"
+python3 src/03_engagement.py
 
-echo "==> [4/7] Network metrics"
-python src/04_network.py
+echo "==> [04/07] Network metrics"
+python3 src/04_network.py
 
-echo "==> [5/7] Sentiment metrics"
-python src/05_sentiment.py
+echo "==> [05/07] Sentiment analysis"
+python3 src/05_sentiment.py
 
-echo "==> [6/7] Fidelity metrics"
-python src/06_fidelity.py
+echo "==> [06/07] Fidelity metrics"
+python3 src/06_fidelity.py
 
-echo "==> [7/7] Triangulation"
-python src/07_triangulation.py
+echo "==> [07/07] Triangulation"
+python3 src/07_triangulation.py
 
-echo "Pipeline complete."
+echo ""
+echo "========================================"
+echo " Pipeline complete!"
+echo " Outputs are in data/processed/"
+echo "========================================"
