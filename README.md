@@ -1,5 +1,7 @@
 # WhatsApp Implementation Science Pipeline
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A general-purpose research pipeline for public health implementers. Turns a WhatsApp group-chat export into structured metrics for implementation science: engagement, social network analysis, sentiment, and fidelity to a Theory of Change (ToC).
 
 Originally developed for a Pakistani emergency ambulance programme. Designed to work with **any** WhatsApp group in **any** language.
