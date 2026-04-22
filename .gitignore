@@ -4,6 +4,8 @@ data/processed/
 docs/
 config/role_mapping.csv
 config/sender_lookup.csv
+findings_summary.txt
+manuscript_notes.md
 .env
 __pycache__/
 .DS_Store
