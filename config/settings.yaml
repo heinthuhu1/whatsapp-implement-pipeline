@@ -18,6 +18,7 @@ paths:
   voice_notes_dir: data/raw/voice_notes/
   voice_notes_output: data/interim/voice_notes_transcribed.csv
   messages_interim: data/interim/messages.csv
+  case_reports: data/interim/case_reports.csv
   transcription_failures: data/interim/transcription_failures.log
   engagement_metrics: data/processed/engagement_metrics.csv
   network_metrics: data/processed/network_metrics.csv

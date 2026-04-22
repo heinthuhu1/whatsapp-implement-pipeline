@@ -1,7 +1,6 @@
-"""Directed reply network: centralities, Gini, membership timeline."""
+"""Temporal co-activity network: 30-minute sliding window edge construction."""
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 import networkx as nx
@@ -9,7 +8,8 @@ import numpy as np
 import pandas as pd
 import yaml
 
-REPLY_QUOTE_RE = re.compile(r"^>\s*(\S+):", re.MULTILINE)
+
+WINDOW_MINUTES = 30
 
 
 def load_settings(path: str = "config/settings.yaml") -> dict:
@@ -17,30 +17,42 @@ def load_settings(path: str = "config/settings.yaml") -> dict:
         return yaml.safe_load(f)
 
 
-def extract_reply_target(message: str) -> str | None:
-    if not isinstance(message, str):
-        return None
-    m = REPLY_QUOTE_RE.search(message)
-    return m.group(1) if m else None
-
-
-def build_edges(df: pd.DataFrame) -> pd.DataFrame:
+def build_coactivity_edges(df: pd.DataFrame, window_minutes: int = WINDOW_MINUTES) -> pd.DataFrame:
+    """For every message, find all other messages within ±window_minutes.
+    Each unique (A, B) pair that co-occurs in a window contributes +1 to edge weight.
+    Self-loops are excluded. Returns an undirected weighted edge list.
+    """
     df = df.sort_values("timestamp").reset_index(drop=True)
-    edges = []
-    for i, row in df.iterrows():
-        target = extract_reply_target(row["message"])
-        if target and pd.notna(row["sender_code"]):
-            edges.append({"source": row["sender_code"], "target": target,
-                          "phase": row["phase"], "timestamp": row["timestamp"]})
+    timestamps = df["timestamp"].values.astype("datetime64[ns]")
+    senders = df["sender_code"].values
+    window = np.timedelta64(window_minutes, "m")
+
+    pair_counts: dict[tuple[str, str], int] = {}
+
+    for i in range(len(df)):
+        if pd.isna(senders[i]):
             continue
-        if i > 0 and pd.notna(row["sender_code"]):
-            prev = df.iloc[i - 1]
-            if pd.notna(prev["sender_code"]) and prev["sender_code"] != row["sender_code"]:
-                edges.append({"source": row["sender_code"],
-                              "target": prev["sender_code"],
-                              "phase": row["phase"],
-                              "timestamp": row["timestamp"]})
-    return pd.DataFrame(edges)
+        t = timestamps[i]
+        # Binary search bounds for the window
+        left = np.searchsorted(timestamps, t - window, side="left")
+        right = np.searchsorted(timestamps, t + window, side="right")
+        window_senders = set()
+        for j in range(left, right):
+            if j != i and not pd.isna(senders[j]):
+                window_senders.add(senders[j])
+        for other in window_senders:
+            if other == senders[i]:
+                continue
+            a, b = tuple(sorted([senders[i], other]))
+            pair_counts[(a, b)] = pair_counts.get((a, b), 0) + 1
+
+    if not pair_counts:
+        return pd.DataFrame(columns=["source", "target", "weight"])
+
+    # Weights were double-counted (once from each direction), halve them
+    rows = [{"source": a, "target": b, "weight": w // 2}
+            for (a, b), w in pair_counts.items()]
+    return pd.DataFrame(rows)
 
 
 def gini(values: np.ndarray) -> float:
@@ -49,93 +61,88 @@ def gini(values: np.ndarray) -> float:
         return 0.0
     n = v.size
     cum = np.cumsum(v)
-    return (n + 1 - 2 * cum.sum() / cum[-1]) / n
+    return float((n + 1 - 2 * cum.sum() / cum[-1]) / n)
 
 
-def phase_metrics(edges: pd.DataFrame) -> pd.DataFrame:
+def compute_node_metrics(
+    df: pd.DataFrame,
+    edges: pd.DataFrame,
+    label: str,
+) -> list[dict]:
+    """Compute per-node centrality and activity metrics for one time slice."""
+    G = nx.Graph()
+    for _, e in edges.iterrows():
+        if e["weight"] > 0:
+            G.add_edge(e["source"], e["target"], weight=int(e["weight"]))
+
+    if G.number_of_nodes() == 0:
+        return []
+
+    deg_c = nx.degree_centrality(G)
+    bet_c = nx.betweenness_centrality(G, weight="weight", normalized=True)
+    try:
+        eig_c = nx.eigenvector_centrality(G, weight="weight", max_iter=1000)
+    except nx.PowerIterationFailedConvergence:
+        eig_c = {n: np.nan for n in G.nodes}
+
+    msg_counts = df.groupby("sender_code").size().to_dict()
+    gini_val = gini(np.array(list(msg_counts.values()), dtype=float))
+
     rows = []
-    for phase, sub in edges.groupby("phase"):
-        G = nx.DiGraph()
-        for _, e in sub.iterrows():
-            if G.has_edge(e["source"], e["target"]):
-                G[e["source"]][e["target"]]["weight"] += 1
-            else:
-                G.add_edge(e["source"], e["target"], weight=1)
-        if G.number_of_nodes() == 0:
-            continue
-        bet = nx.betweenness_centrality(G)
-        deg = dict(G.degree())
-        try:
-            eig = nx.eigenvector_centrality(G, max_iter=1000)
-        except nx.PowerIterationFailedConvergence:
-            eig = {n: np.nan for n in G.nodes}
-        for node in G.nodes:
-            rows.append({"phase": phase, "node": node,
-                         "betweenness": bet[node], "degree": deg[node],
-                         "eigenvector": eig.get(node, np.nan)})
-    return pd.DataFrame(rows)
+    for node in G.nodes:
+        rows.append({
+            "sender_code": node,
+            "phase": label,
+            "degree_centrality": round(deg_c.get(node, 0.0), 6),
+            "betweenness_centrality": round(bet_c.get(node, 0.0), 6),
+            "eigenvector_centrality": round(eig_c.get(node, np.nan), 6),
+            "message_count": msg_counts.get(node, 0),
+            "co_activity_partners": G.degree(node),
+            "gini_coefficient": round(gini_val, 6),
+        })
+    return rows
 
 
-def message_share_gini(df: pd.DataFrame) -> pd.DataFrame:
-    out = []
-    for phase, sub in df.groupby("phase"):
-        counts = sub.groupby("sender_code").size().values
-        out.append({"phase": phase, "gini_message_share": gini(counts)})
-    return pd.DataFrame(out)
-
-
-def membership_timeline(df: pd.DataFrame) -> pd.DataFrame:
-    sys_msgs = df[df["message_type"] == "system"].copy()
-    events = []
-    for _, row in sys_msgs.iterrows():
-        msg = row["message"] or ""
-        event = None
-        if "added" in msg.lower():
-            event = "added"
-        elif "left" in msg.lower():
-            event = "left"
-        elif "removed" in msg.lower():
-            event = "removed"
-        elif "joined" in msg.lower():
-            event = "joined"
-        elif "changed the group" in msg.lower():
-            event = "group_changed"
-        if event:
-            events.append({"timestamp": row["timestamp"],
-                           "event": event, "detail": msg})
-    return pd.DataFrame(events)
+def split_by_year(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    df = df.copy()
+    df["_year"] = df["timestamp"].dt.year.astype(str)
+    return {year: sub.drop(columns="_year") for year, sub in df.groupby("_year")}
 
 
 def main() -> None:
     settings = load_settings()
     df = pd.read_csv(settings["paths"]["messages_interim"], parse_dates=["timestamp"])
 
-    msgs = df[df["message_type"] != "system"].dropna(subset=["timestamp"])
-    edges = build_edges(msgs)
+    msgs = (
+        df[df["message_type"] != "system"]
+        .dropna(subset=["timestamp", "sender_code"])
+        .copy()
+    )
 
-    G = nx.DiGraph()
-    for _, e in edges.iterrows():
-        if G.has_edge(e["source"], e["target"]):
-            G[e["source"]][e["target"]]["weight"] += 1
-        else:
-            G.add_edge(e["source"], e["target"], weight=1)
+    # Full-period graph for GraphML export
+    all_edges = build_coactivity_edges(msgs)
+    G = nx.Graph()
+    for _, e in all_edges.iterrows():
+        if e["weight"] > 0:
+            G.add_edge(e["source"], e["target"], weight=int(e["weight"]))
 
     graph_path = Path(settings["paths"]["network_graph"])
     graph_path.parent.mkdir(parents=True, exist_ok=True)
     nx.write_graphml(G, graph_path)
 
-    metrics = phase_metrics(edges)
-    ginis = message_share_gini(msgs)
-    members = membership_timeline(df)
+    # Per-year metrics
+    all_rows = []
+    for year, sub in split_by_year(msgs).items():
+        edges = build_coactivity_edges(sub)
+        all_rows.extend(compute_node_metrics(sub, edges, label=year))
 
-    metrics = metrics.assign(kind="centrality")
-    ginis = ginis.assign(kind="gini")
-    members = members.assign(kind="membership")
-    combined = pd.concat([metrics, ginis, members], ignore_index=True, sort=False)
+    metrics_df = pd.DataFrame(all_rows)
 
     out = Path(settings["paths"]["network_metrics"])
-    combined.to_csv(out, index=False)
-    print(f"[04_network] Wrote {out} and {graph_path}")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    metrics_df.to_csv(out, index=False)
+    print(f"[04_network] {len(G.nodes)} nodes, {len(G.edges)} edges → {graph_path}")
+    print(f"[04_network] Wrote {len(metrics_df)} metric rows → {out}")
 
 
 if __name__ == "__main__":

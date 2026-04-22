@@ -101,6 +101,80 @@ def parse_whatsapp_export(text: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+# Canonical field names and their regex aliases (all lowercase, stripped)
+CASE_FIELD_ALIASES = {
+    "case_no": re.compile(r"^case\s*no\.?$", re.IGNORECASE),
+    "date": re.compile(r"^date$", re.IGNORECASE),
+    "gender": re.compile(r"^gender$", re.IGNORECASE),
+    "initial_complaint": re.compile(r"^initial\s*complaint$", re.IGNORECASE),
+    "location": re.compile(r"^location(\s*transported\s*to)?$", re.IGNORECASE),
+    "time_patient_reached": re.compile(r"^time\s*patient\s*reached$", re.IGNORECASE),
+    "hospital": re.compile(
+        r"^(name\s*of\s*hospital\s*transported\s*to|hospital\s*transported\s*to|transported\s*to)$",
+        re.IGNORECASE,
+    ),
+    "time_hospital_reached": re.compile(
+        r"^time\s*(hospital\s*)?(was\s*)?reached$", re.IGNORECASE
+    ),
+    "first_aid": re.compile(r"^first\s*aid\s*provided$", re.IGNORECASE),
+    "emp_personnel": re.compile(r"^emp\s*person(nel|al)?\s*(names?)?$", re.IGNORECASE),
+}
+
+FIELD_LINE_RE = re.compile(r"^([A-Za-z][A-Za-z\s/\(\)\.]{1,45}):\s*(.*)")
+
+
+def _canonical_field(label: str) -> str | None:
+    label = label.strip()
+    for canon, pat in CASE_FIELD_ALIASES.items():
+        if pat.match(label):
+            return canon
+    return None
+
+
+def parse_case_reports(messages_df: pd.DataFrame) -> pd.DataFrame:
+    """Extract structured case report fields from multi-line ambulance dispatch messages."""
+    records = []
+    case_trigger = re.compile(r"case\s*no|🚑", re.IGNORECASE)
+
+    for _, row in messages_df.iterrows():
+        msg = str(row.get("message", ""))
+        if not case_trigger.search(msg):
+            continue
+
+        fields: dict = {
+            "timestamp": row["timestamp"],
+            "sender_code": row["sender_code"],
+            "phase": row.get("phase"),
+            "case_no": None,
+            "date": None,
+            "gender": None,
+            "initial_complaint": None,
+            "location": None,
+            "time_patient_reached": None,
+            "hospital": None,
+            "time_hospital_reached": None,
+            "first_aid": None,
+            "emp_personnel": None,
+            "raw_message": msg,
+        }
+
+        for line in msg.splitlines():
+            line = line.strip()
+            m = FIELD_LINE_RE.match(line)
+            if not m:
+                continue
+            label, value = m.group(1).strip(), m.group(2).strip()
+            canon = _canonical_field(label)
+            if canon and fields.get(canon) is None:
+                fields[canon] = value if value else None
+
+        # Only keep rows where we extracted at least a case number or complaint
+        if fields["case_no"] or fields["initial_complaint"]:
+            records.append(fields)
+
+    return pd.DataFrame(records)
+
+
 def assign_phase(ts: pd.Timestamp, phases: list) -> str | None:
     if pd.isna(ts):
         return None
@@ -133,6 +207,12 @@ def main() -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(out_path, index=False)
     print(f"[01_parse] Wrote {len(df)} rows to {out_path}")
+
+    case_df = parse_case_reports(df)
+    case_path = Path(settings["paths"]["case_reports"])
+    case_path.parent.mkdir(parents=True, exist_ok=True)
+    case_df.to_csv(case_path, index=False)
+    print(f"[01_parse] Wrote {len(case_df)} case reports to {case_path}")
 
 
 if __name__ == "__main__":

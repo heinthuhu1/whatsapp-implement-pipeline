@@ -1,14 +1,19 @@
 """Sentiment, urgency/hedging keyword matching, emotional labour Gini."""
 from __future__ import annotations
 
+import sys
 from pathlib import Path
+
+# torchvision installed on this machine is version-incompatible with the
+# upgraded torch; block it before transformers tries to import it.
+sys.modules.setdefault("torchvision", None)  # type: ignore[assignment]
 
 import numpy as np
 import pandas as pd
 import yaml
 from transformers import pipeline
 
-MODEL_NAME = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
+MODEL_NAME = "distilbert-base-uncased-finetuned-sst-2-english"
 
 
 def load_settings(path: str = "config/settings.yaml") -> dict:
@@ -45,6 +50,17 @@ def main() -> None:
     settings = load_settings()
     df = pd.read_csv(settings["paths"]["messages_interim"], parse_dates=["timestamp"])
     df = df[df["message_type"] != "system"].dropna(subset=["timestamp"]).copy()
+
+    # Merge in voice note translations where filenames are available
+    vn_path = Path(settings["paths"]["voice_notes_output"])
+    df["translation_en"] = None
+    if vn_path.exists() and df["media_filename"].notna().any():
+        vn = pd.read_csv(vn_path)[["filename", "translation_en"]]
+        df["media_filename"] = df["media_filename"].astype(str)
+        df = df.merge(vn, left_on="media_filename", right_on="filename", how="left")
+        df["translation_en"] = df["translation_en_y"].combine_first(df["translation_en_x"])
+        df.drop(columns=["translation_en_x", "translation_en_y", "filename"],
+                inplace=True, errors="ignore")
 
     text_col = df["translation_en"].fillna(df["message"]).fillna("").astype(str)
 
