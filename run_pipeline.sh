@@ -51,8 +51,12 @@ python3 src/06_fidelity.py
 echo "==> [07/07] Triangulation"
 python3 src/07_triangulation.py
 
+echo "==> [08/08] Visualisations"
+python3 src/08_visualise.py
+
 echo ""
 echo "========================================"
 echo " Pipeline complete!"
 echo " Outputs are in data/processed/"
+echo " Figures are in data/processed/figures/"
 echo "========================================"
