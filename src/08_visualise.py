@@ -190,44 +190,56 @@ def fig_network():
 
 # ── Figure 3: Sentiment trends ───────────────────────────────────────────────
 def fig_sentiment():
-    sent = pd.read_csv("data/processed/sentiment_metrics.csv")
-    if "timestamp" not in sent.columns:
-        print("  [08] sentiment: no timestamp column")
+    sent_all = pd.read_csv("data/processed/sentiment_metrics.csv")
+
+    # split into daily time-series and phase summaries
+    daily = sent_all[sent_all["kind"] == "rolling_sentiment"].copy()
+    summary = sent_all[sent_all["kind"] == "phase_summary"].copy()
+
+    if daily.empty:
+        print("  [08] sentiment: no rolling_sentiment rows")
         return
 
-    sent["timestamp"] = pd.to_datetime(sent["timestamp"])
-    sent = sent.sort_values("timestamp")
+    daily["timestamp"] = pd.to_datetime(daily["timestamp"])
+    daily = daily.sort_values("timestamp")
 
-    fig, axes = plt.subplots(2, 1, figsize=(9, 6), sharex=True)
+    fig, axes = plt.subplots(2, 1, figsize=(9, 6))
 
-    # panel A — rolling sentiment
-    col_14d = "sentiment_14d" if "sentiment_14d" in sent.columns else "sentiment_7d"
-    col_7d  = "sentiment_7d"  if "sentiment_7d"  in sent.columns else col_14d
+    # panel A — rolling sentiment time series
+    col_14d = "sentiment_14d" if "sentiment_14d" in daily.columns else "sentiment_7d"
+    col_7d  = "sentiment_7d"  if "sentiment_7d"  in daily.columns else col_14d
     ax = axes[0]
     shade_phases(ax, PHASES)
-    if col_14d in sent.columns:
-        ax.plot(sent["timestamp"], sent[col_14d], color="#2c3e50", linewidth=1.5,
+    if col_14d in daily.columns:
+        ax.plot(daily["timestamp"], daily[col_14d], color="#2c3e50", linewidth=1.5,
                 label="14-day rolling")
-    if col_7d in sent.columns and col_7d != col_14d:
-        ax.plot(sent["timestamp"], sent[col_7d], color="#7f8c8d", linewidth=0.8,
+    if col_7d in daily.columns and col_7d != col_14d:
+        ax.plot(daily["timestamp"], daily[col_7d], color="#7f8c8d", linewidth=0.8,
                 alpha=0.6, label="7-day rolling")
     ax.axhline(0, color="#e74c3c", linewidth=0.8, linestyle="--", alpha=0.5)
     ax.set_ylabel("Sentiment score\n(negative ← 0 → positive)")
     ax.set_title("A  Sentiment over time", fontweight="bold", loc="left")
     ax.legend(fontsize=8, framealpha=0.6)
 
-    # panel B — urgency & peer support rates
+    # panel B — urgency & peer support per year (bar chart from phase summaries)
     ax2 = axes[1]
-    shade_phases(ax2, PHASES)
-    if "urgency_rate" in sent.columns:
-        ax2.plot(sent["timestamp"], sent["urgency_rate"] * 100, color="#e74c3c",
-                 linewidth=1.2, label="Urgency %")
-    if "peer_support_rate" in sent.columns:
-        ax2.plot(sent["timestamp"], sent["peer_support_rate"] * 100, color="#27ae60",
-                 linewidth=1.2, label="Peer support %")
+    def _norm_phase(v):
+        try: return str(int(float(v)))
+        except: return str(v)
+    summary["phase_label"] = summary["phase"].apply(_norm_phase)
+    summary = summary.sort_values("phase_label")
+
+    x = np.arange(len(summary))
+    w = 0.35
+    ax2.bar(x - w/2, summary["urgency_rate"] * 100, width=w,
+            color="#e74c3c", alpha=0.8, label="Urgency %")
+    ax2.bar(x + w/2, summary["peer_support_rate"] * 100, width=w,
+            color="#27ae60", alpha=0.8, label="Peer support %")
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(summary["phase_label"])
     ax2.set_ylabel("Rate (%)")
-    ax2.set_xlabel("Date")
-    ax2.set_title("B  Urgency and peer support rates", fontweight="bold", loc="left")
+    ax2.set_xlabel("Year")
+    ax2.set_title("B  Urgency and peer support rates by year", fontweight="bold", loc="left")
     ax2.legend(fontsize=8, framealpha=0.6)
 
     fig.suptitle("Figure 3  Sentiment and communication style over time",
