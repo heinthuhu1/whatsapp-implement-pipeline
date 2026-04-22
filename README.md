@@ -22,14 +22,6 @@ Designed to work with **any** WhatsApp group in **any** language.
 
 ---
 
-## Sample outputs (Jheeng community health case study)
-
-| Figure | Preview |
-|---|---|
-| Weekly engagement | ![Fig 1](docs/sample_fig1.png) |
-
-> Full sample figures are in [`docs/`](docs/).
-
 ---
 
 ## What you need

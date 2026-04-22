@@ -1,6 +1,7 @@
 data/raw/
 data/interim/
 data/processed/
+docs/
 config/role_mapping.csv
 config/sender_lookup.csv
 .env
