@@ -4,9 +4,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# torchvision installed on this machine is version-incompatible with the
-# upgraded torch; block it before transformers tries to import it.
-sys.modules.setdefault("torchvision", None)  # type: ignore[assignment]
+# Block torchvision only if it is already known to be incompatible with the
+# installed torch version (import will fail). This avoids masking a valid
+# torchvision install on other machines.
+try:
+    import torchvision  # noqa: F401
+except Exception:
+    sys.modules.setdefault("torchvision", None)  # type: ignore[assignment]
 
 import numpy as np
 import pandas as pd

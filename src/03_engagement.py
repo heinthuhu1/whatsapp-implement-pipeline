@@ -102,8 +102,6 @@ def main() -> None:
 
     out = Path(settings["paths"]["engagement_metrics"])
     out.parent.mkdir(parents=True, exist_ok=True)
-    with pd.ExcelWriter(out.with_suffix(".xlsx")) if False else open(out, "w") as f:
-        pass
     # Concatenate vertically with metric column as discriminator
     frames = [weekly, phase, spikes, share, after, latency]
     if not silences.empty:

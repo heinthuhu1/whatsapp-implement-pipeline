@@ -67,11 +67,12 @@ def _to_ogg_bytes(audio_path: Path) -> io.BytesIO:
     return buf
 
 
-def transcribe(client: OpenAI, audio_path: Path) -> str:
+def transcribe(client: OpenAI, audio_path: Path, language: str | None = None) -> str:
     buf = _to_ogg_bytes(audio_path)
-    resp = client.audio.transcriptions.create(
-        model="whisper-1", file=buf, language="ur"
-    )
+    kwargs = {"model": "whisper-1", "file": buf}
+    if language:
+        kwargs["language"] = language
+    resp = client.audio.transcriptions.create(**kwargs)
     return resp.text
 
 
@@ -95,7 +96,10 @@ def process_voice_notes(
     output_path: Path,
     log_path: Path,
     client: OpenAI,
+    settings: dict | None = None,
 ) -> pd.DataFrame:
+    if settings is None:
+        settings = {}
     opus_files = sorted(voice_dir.glob("*.opus"))
     if not opus_files:
         print(f"[02_voice_notes] No .opus files found in {voice_dir}")
@@ -122,7 +126,7 @@ def process_voice_notes(
                "transcription_ur": None, "translation_en": None, "status": "failed"}
 
         try:
-            row["transcription_ur"] = transcribe(client, audio_path)
+            row["transcription_ur"] = transcribe(client, audio_path, language=settings.get("transcription_language"))
             time.sleep(RATE_LIMIT_DELAY)
             row["translation_en"] = translate(client, audio_path)
             time.sleep(RATE_LIMIT_DELAY)

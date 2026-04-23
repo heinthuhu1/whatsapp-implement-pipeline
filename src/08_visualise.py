@@ -2,7 +2,6 @@
 Stage 08 — Publication-ready figures for methods paper.
 Produces 5 figures + 1 summary table, saved to data/processed/figures/.
 """
-import sys
 import os
 import warnings
 warnings.filterwarnings("ignore")
@@ -28,12 +27,20 @@ MILESTONES = cfg.get("milestones", {})
 OUT_DIR = "data/processed/figures"
 os.makedirs(OUT_DIR, exist_ok=True)
 
-PHASE_COLORS = {
+# Named-phase colours; year-based phases get colours auto-assigned below
+PHASE_COLORS: dict[str, str] = {
     "baseline":       "#d4e6f1",
     "implementation": "#d5f5e3",
     "sustainment":    "#fdebd0",
 }
 DEFAULT_COLOR = "#f2f3f4"
+
+# Auto-assign distinct pastel colours for any phases not already named above
+_YEAR_PALETTE = ["#d4e6f1", "#d5f5e3", "#fdebd0", "#f9ebea", "#e8daef", "#d0ece7"]
+for _i, _p in enumerate(PHASES):
+    _name = str(_p["name"])
+    if _name.lower() not in PHASE_COLORS:
+        PHASE_COLORS[_name] = _YEAR_PALETTE[_i % len(_YEAR_PALETTE)]
 
 STYLE = {
     "font.family":      "sans-serif",
@@ -359,6 +366,16 @@ def table_summary():
     net  = pd.read_csv("data/processed/network_metrics.csv")
     sent = pd.read_csv("data/processed/sentiment_metrics.csv")
     fid  = pd.read_csv("data/processed/fidelity_metrics.csv")
+    msg  = pd.read_csv("data/interim/messages.csv")
+
+    def _norm(v):
+        try: return str(int(float(v)))
+        except: return str(v)
+
+    # normalise phase labels to strings in all dataframes
+    for _df in (net, sent, fid, msg, impl):
+        if "phase" in _df.columns:
+            _df["phase"] = _df["phase"].apply(_norm)
 
     # build a clean display table
     rows = []
@@ -366,12 +383,11 @@ def table_summary():
         r = {"Phase": str(phase).capitalize()}
 
         # messages
-        msg = pd.read_csv("data/interim/messages.csv")
         phase_msg = msg[msg["phase"] == phase] if "phase" in msg.columns else pd.DataFrame()
         r["Messages (n)"] = len(phase_msg) if not phase_msg.empty else "—"
 
         # network
-        net_p = net[net["phase"].astype(str) == str(phase)]
+        net_p = net[net["phase"] == phase]
         if not net_p.empty:
             r["Network density (Gini)"] = f"{net_p['gini_coefficient'].iloc[0]:.2f}"
             r["Avg co-activity partners"] = f"{net_p['co_activity_partners'].mean():.1f}"
@@ -379,11 +395,7 @@ def table_summary():
             r["Network density (Gini)"] = "—"
             r["Avg co-activity partners"] = "—"
 
-        # sentiment — normalise float phases (2024.0 → "2024") before matching
-        def _norm(v):
-            try: return str(int(float(v)))
-            except: return str(v)
-        sent_p = sent[sent["phase"].apply(_norm) == _norm(phase)] if "phase" in sent.columns else pd.DataFrame()
+        sent_p = sent[sent["phase"] == phase] if "phase" in sent.columns else pd.DataFrame()
         def _fmt_sent(df):
             sm = df["sentiment_mean"].mean()
             ur = df["urgency_rate"].mean() * 100
@@ -399,7 +411,7 @@ def table_summary():
             r["Peer support rate"] = "—"
 
         # fidelity — best and worst
-        fid_p = fid[(fid["phase"].astype(str) == str(phase)) & (fid["kind"] == "coverage")]
+        fid_p = fid[(fid["phase"] == phase) & (fid["kind"] == "coverage")]
         if not fid_p.empty:
             best = fid_p.loc[fid_p["coverage_pct"].idxmax()]
             worst = fid_p.loc[fid_p["coverage_pct"].idxmin()]

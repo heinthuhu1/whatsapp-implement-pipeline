@@ -146,6 +146,11 @@ flag_names: []
 # -----------------------------------------------------------
 # Advanced settings (safe to leave as defaults)
 # -----------------------------------------------------------
+
+# ISO 639-1 language code for voice note transcription (e.g. "ur", "sw", "fr").
+# Leave blank to let Whisper auto-detect the language.
+transcription_language: "ur"
+
 silence_threshold_hours: 6    # gap length that counts as a silence period
 rolling_window_days: 7        # rolling window for engagement trend lines
 after_hours_start: 22         # hour (24h) after-hours period starts
