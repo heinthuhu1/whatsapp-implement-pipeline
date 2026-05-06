@@ -14,7 +14,7 @@ paths:
   anonymised_export: data/interim/anonymised_export.txt
   anonymisation_warnings: data/interim/anonymisation_warnings.log
   voice_notes_dir: data/raw/voice_notes/
-  voice_notes_output: data/interim/voice_notes_transcribed.csv
+  voice_notes_output: data/processed/voice_notes.csv
   messages_interim: data/interim/messages.csv
   case_reports: data/interim/case_reports.csv
   transcription_failures: data/interim/transcription_failures.log
@@ -24,6 +24,7 @@ paths:
   sentiment_metrics: data/processed/sentiment_metrics.csv
   fidelity_metrics: data/processed/fidelity_metrics.csv
   implementation_summary: data/processed/implementation_summary.csv
+  table1_overview: data/processed/table1_overview.csv
 
 # -----------------------------------------------------------
 # STEP 2: Define your study phases
@@ -151,7 +152,7 @@ flag_names: []
 # Leave blank to let Whisper auto-detect the language.
 transcription_language: "ur"
 
-silence_threshold_hours: 6    # gap length that counts as a silence period
+silence_threshold_hours: 48   # gap length that counts as a silence period
 rolling_window_days: 7        # rolling window for engagement trend lines
 after_hours_start: 22         # hour (24h) after-hours period starts
 after_hours_end: 6            # hour (24h) after-hours period ends

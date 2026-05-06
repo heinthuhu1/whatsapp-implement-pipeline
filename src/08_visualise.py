@@ -2,8 +2,10 @@
 Stage 08 — Publication-ready figures for methods paper.
 Produces 5 figures + 1 summary table, saved to data/processed/figures/.
 """
+import importlib.util
 import os
 import warnings
+from pathlib import Path
 warnings.filterwarnings("ignore")
 
 import pandas as pd
@@ -16,6 +18,13 @@ import matplotlib.gridspec as gridspec
 from matplotlib.lines import Line2D
 import networkx as nx
 import yaml
+
+# Load build_coactivity_edges from stage 04 (filename starts with a digit, so import via importlib)
+_stage04_path = Path(__file__).resolve().parent / "04_network.py"
+_spec = importlib.util.spec_from_file_location("stage04_network", _stage04_path)
+_stage04 = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_stage04)
+build_coactivity_edges = _stage04.build_coactivity_edges
 
 # ── config ──────────────────────────────────────────────────────────────────
 with open("config/settings.yaml") as f:
@@ -123,41 +132,37 @@ def fig_engagement():
     print(f"  [08] Saved {path}")
 
 
-# ── Figure 2: Network graph — implementation vs sustainment ─────────────────
+# ── Figure 2: Network graph — one panel per phase ───────────────────────────
 def fig_network():
-    try:
-        G_full = nx.read_graphml("data/processed/network_edges.graphml")
-    except Exception as e:
-        print(f"  [08] network graph: {e}")
-        return
-
     msg = pd.read_csv("data/interim/messages.csv")
     msg["timestamp"] = pd.to_datetime(msg["timestamp"])
+    msg = (
+        msg[msg["message_type"] != "system"]
+        .dropna(subset=["timestamp", "sender_code"])
+        .copy()
+    )
 
-    phase_defs = {p["name"]: (pd.Timestamp(p["start"]), pd.Timestamp(p["end"]))
-                  for p in PHASES}
+    phase_defs = [(str(p["name"]),
+                   pd.Timestamp(p["start"]),
+                   pd.Timestamp(p["end"])) for p in PHASES]
 
-    target_phases = [p for p in ["implementation", "sustainment", "baseline"]
-                     if p in phase_defs][:2]
-    if not target_phases:
-        target_phases = list(phase_defs.keys())[:2]
+    n_panels = len(phase_defs)
+    if n_panels == 0:
+        print("  [08] network graph: no phases configured")
+        return
 
-    n_panels = len(target_phases)
     fig, axes = plt.subplots(1, n_panels, figsize=(5 * n_panels, 5))
     if n_panels == 1:
         axes = [axes]
 
-    for ax, phase_name in zip(axes, target_phases):
-        start, end = phase_defs[phase_name]
+    for ax, (phase_name, start, end) in zip(axes, phase_defs):
         phase_msg = msg[(msg["timestamp"] >= start) & (msg["timestamp"] <= end)]
-        senders = set(phase_msg["sender_code"].dropna().unique())
+        edges_df = build_coactivity_edges(phase_msg)
 
         G = nx.Graph()
-        for u, v, d in G_full.edges(data=True):
-            if u in senders and v in senders:
-                G.add_edge(u, v, weight=float(d.get("weight", 1)))
-        for s in senders:
-            G.add_node(s)
+        for _, e in edges_df.iterrows():
+            if e["weight"] > 0:
+                G.add_edge(e["source"], e["target"], weight=int(e["weight"]))
 
         if len(G.nodes) == 0:
             ax.set_title(f"{phase_name.capitalize()}\n(no data)", fontweight="bold")
@@ -355,117 +360,6 @@ def fig_case_reports():
     print(f"  [08] Saved {path}")
 
 
-# ── Table 1: Implementation summary ─────────────────────────────────────────
-def table_summary():
-    try:
-        impl = pd.read_csv("data/processed/implementation_summary.csv")
-    except FileNotFoundError:
-        print("  [08] implementation_summary.csv not found")
-        return
-
-    net  = pd.read_csv("data/processed/network_metrics.csv")
-    sent = pd.read_csv("data/processed/sentiment_metrics.csv")
-    fid  = pd.read_csv("data/processed/fidelity_metrics.csv")
-    msg  = pd.read_csv("data/interim/messages.csv")
-
-    def _norm(v):
-        try: return str(int(float(v)))
-        except: return str(v)
-
-    # normalise phase labels to strings in all dataframes
-    for _df in (net, sent, fid, msg, impl):
-        if "phase" in _df.columns:
-            _df["phase"] = _df["phase"].apply(_norm)
-
-    # build a clean display table
-    rows = []
-    for phase in impl["phase"].unique():
-        r = {"Phase": str(phase).capitalize()}
-
-        # messages
-        phase_msg = msg[msg["phase"] == phase] if "phase" in msg.columns else pd.DataFrame()
-        r["Messages (n)"] = len(phase_msg) if not phase_msg.empty else "—"
-
-        # network
-        net_p = net[net["phase"] == phase]
-        if not net_p.empty:
-            r["Network density (Gini)"] = f"{net_p['gini_coefficient'].iloc[0]:.2f}"
-            r["Avg co-activity partners"] = f"{net_p['co_activity_partners'].mean():.1f}"
-        else:
-            r["Network density (Gini)"] = "—"
-            r["Avg co-activity partners"] = "—"
-
-        sent_p = sent[sent["phase"] == phase] if "phase" in sent.columns else pd.DataFrame()
-        def _fmt_sent(df):
-            sm = df["sentiment_mean"].mean()
-            ur = df["urgency_rate"].mean() * 100
-            ps = df["peer_support_rate"].mean() * 100
-            return (f"{sm:.3f}" if pd.notna(sm) else "—",
-                    f"{ur:.1f}%" if pd.notna(ur) else "—",
-                    f"{ps:.1f}%" if pd.notna(ps) else "—")
-        if not sent_p.empty and sent_p["sentiment_mean"].notna().any():
-            r["Sentiment (mean)"], r["Urgency rate"], r["Peer support rate"] = _fmt_sent(sent_p)
-        else:
-            r["Sentiment (mean)"] = "—"
-            r["Urgency rate"] = "—"
-            r["Peer support rate"] = "—"
-
-        # fidelity — best and worst
-        fid_p = fid[(fid["phase"] == phase) & (fid["kind"] == "coverage")]
-        if not fid_p.empty:
-            best = fid_p.loc[fid_p["coverage_pct"].idxmax()]
-            worst = fid_p.loc[fid_p["coverage_pct"].idxmin()]
-            r["Strongest ToC component"] = f"{best['component'].replace('_',' ')} ({best['coverage_pct']:.2f})"
-            r["Weakest ToC component"] = f"{worst['component'].replace('_',' ')} ({worst['coverage_pct']:.2f})"
-        else:
-            r["Strongest ToC component"] = "—"
-            r["Weakest ToC component"] = "—"
-
-        rows.append(r)
-
-    tbl = pd.DataFrame(rows).set_index("Phase")
-
-    # render as figure
-    fig, ax = plt.subplots(figsize=(13, 0.5 + 0.6 * (len(tbl) + 1)))
-    ax.axis("off")
-    t = ax.table(cellText=tbl.values,
-                 colLabels=tbl.columns,
-                 rowLabels=tbl.index,
-                 loc="center", cellLoc="center")
-    t.auto_set_font_size(False)
-    t.set_fontsize(9)
-    t.auto_set_column_width(range(len(tbl.columns) + 1))
-
-    # header style (column headers are row 0, cols 0..n-1)
-    for j in range(len(tbl.columns)):
-        cell = t[0, j]
-        cell.set_facecolor("#2c3e50")
-        cell.set_text_props(color="white", fontweight="bold")
-    # row label style (row labels are col -1 for rows 1..n)
-    for i in range(1, len(tbl) + 1):
-        if (i, -1) in t._cells:
-            t[i, -1].set_facecolor("#eaf2ff")
-            t[i, -1].set_text_props(fontweight="bold")
-    # alternating row colours
-    for i in range(1, len(tbl) + 1):
-        for j in range(len(tbl.columns)):
-            if i % 2 == 0:
-                t[i, j].set_facecolor("#f8f9fa")
-
-    ax.set_title("Table 1  Pipeline output summary by study phase",
-                 fontweight="bold", fontsize=11, pad=14)
-    fig.tight_layout()
-    path = f"{OUT_DIR}/table1_summary.png"
-    fig.savefig(path, bbox_inches="tight", dpi=180)
-    plt.close(fig)
-    print(f"  [08] Saved {path}")
-
-    # also write as CSV for paper
-    csv_path = f"{OUT_DIR}/table1_summary.csv"
-    tbl.to_csv(csv_path)
-    print(f"  [08] Saved {csv_path}")
-
-
 # ── main ─────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print("[08_visualise] Generating figures...")
@@ -474,5 +368,4 @@ if __name__ == "__main__":
     fig_sentiment()
     fig_fidelity()
     fig_case_reports()
-    table_summary()
     print(f"[08_visualise] Done. Figures saved to {OUT_DIR}/")

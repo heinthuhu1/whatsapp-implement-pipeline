@@ -51,8 +51,11 @@ python3 src/06_fidelity.py
 echo "==> [07/07] Triangulation"
 python3 src/07_triangulation.py
 
-echo "==> [08/08] Visualisations"
+echo "==> [08/09] Visualisations"
 python3 src/08_visualise.py
+
+echo "==> [09/09] Table 1 overview"
+python3 src/09_table1.py
 
 echo ""
 echo "========================================"
