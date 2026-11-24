@@ -1,0 +1,94 @@
+===== 00_anonymise (exit 0)
+[00_anonymise] Lines processed:    907
+[00_anonymise] Unique senders:     8 (8 new)
+[00_anonymise] Numbers redacted:   102
+[00_anonymise] Mentions redacted:  1
+[00_anonymise] Names redacted:     133
+[00_anonymise] Name flags raised:  1
+[00_anonymise] Wrote data/interim/anonymised_export.txt
+
+
+===== 01_parse (exit 0)
+[01_parse] Wrote 361 rows to data/interim/messages.csv
+[01_parse] Wrote 53 case reports to data/interim/case_reports.csv
+
+
+===== 03_engagement (exit 0)
+[03_engagement] Wrote data/processed/engagement_metrics.csv
+
+
+===== 04_network (exit 0)
+[04_network] 8 nodes, 25 edges → data/processed/network_edges.graphml
+[04_network] Wrote 15 metric rows → data/processed/network_metrics.csv
+
+
+===== 05_sentiment (exit 0)
+[05_sentiment] Wrote data/processed/sentiment_metrics.csv
+
+
+===== 06_fidelity (exit 0)
+[06_fidelity] Wrote data/processed/fidelity_metrics.csv
+
+
+===== 07_triangulation (exit 0)
+[07_triangulation] Wrote data/processed/implementation_summary.csv
+
+
+===== 08_visualise (exit 0)
+[08_visualise] Generating figures...
+  [08] Saved data/processed/figures/fig1_engagement.png
+  [08] Saved data/processed/figures/fig2_network.png
+  [08] Saved data/processed/figures/fig3_sentiment.png
+  [08] Saved data/processed/figures/fig4_fidelity.png
+  [08] Saved data/processed/figures/fig5_case_reports.png
+[08_visualise] Done. Figures saved to data/processed/figures/
+
+
+===== 09_table1 (exit 0)
+[09_table1] Wrote data/processed/table1_overview.csv
+[09_table1] Wrote data/processed/table1_overview.txt
+
+Table 1 cell values                                             Overall                  2024                  2025
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  CORPUS STRUCTURE
+
+  Months observed                                                     4                     2                     2
+  Active senders (n)                                                  8                     7                     8
+  Text messages and system notices (n)                              361                   164                   197
+  Mean messages per month                                            90                    82                    98
+  Voice notes posted (n)                                             93                    39                    54
+  Voice notes successfully transcribed (n)                           93                    39                    54
+  Voice note mean duration (s)                                     24.1                  22.5                  25.3
+  Mean text-message length (words)                                 12.2                  12.8                  11.6
+  Structured case reports extracted (n)                              53                    24                    29
+
+  TEMPORAL DOMAIN
+
+  Weekly volume, four-week rolling mean (range)                   15–28                 15–22                 11–28
+  Velocity-spike days (n)                                             1                     0                     1
+  Silence periods (n)                                                 5                     3                     2
+
+  RELATIONAL DOMAIN
+
+  Co-activity network nodes (n)                                       8                     7                     8
+  Co-activity network edges (n)                                      25                    20                    25
+  Network density                                                  0.89                  0.95                  0.89
+  Gini coefficient of message counts                               0.39                  0.31                  0.39
+  Mean co-activity partners per sender                              6.2                   5.7                   6.2
+
+  CONTENT DOMAIN
+
+  Mean sentiment score                                            -0.64                 -0.64                 -0.64
+  Urgency-language rate (%)                                         1.7                   3.2                   0.5
+  Peer-support language rate (%)                                    2.6                   1.9                   3.1
+  Highest ToC component coverage (%)                                  —Clinical protocol (10.8)   Coordination (13.9)
+  Lowest ToC component coverage (%)                                   —    Coordination (2.5)        Training (2.1)
+
+  BEHAVIOURAL DOMAIN
+
+  Mean response latency                                           9.1 h                10.5 h                 7.9 h
+  Mean urgency-response latency                                   7.9 h                 4.8 h                23.3 h
+  After-hours activity rate (%)                                     0.6                   0.0                   1.0
+
+

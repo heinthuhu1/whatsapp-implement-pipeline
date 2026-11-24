@@ -1,6 +1,7 @@
 """
 Stage 08 — Publication-ready figures for methods paper.
-Produces 5 figures + 1 summary table, saved to data/processed/figures/.
+Produces 5 figures + 1 summary table, saved to paths.figures_dir (default: a
+figures/ folder next to engagement_metrics, i.e. data/processed/figures/).
 """
 import importlib.util
 import os
@@ -17,7 +18,8 @@ import matplotlib.patches as mpatches
 import matplotlib.gridspec as gridspec
 from matplotlib.lines import Line2D
 import networkx as nx
-import yaml
+
+from common import load_settings
 
 # Load build_coactivity_edges from stage 04 (filename starts with a digit, so import via importlib)
 _stage04_path = Path(__file__).resolve().parent / "04_network.py"
@@ -27,13 +29,14 @@ _spec.loader.exec_module(_stage04)
 build_coactivity_edges = _stage04.build_coactivity_edges
 
 # ── config ──────────────────────────────────────────────────────────────────
-with open("config/settings.yaml") as f:
-    cfg = yaml.safe_load(f)
+cfg = load_settings()
 
 PHASES = cfg.get("phases", [])
 MILESTONES = cfg.get("milestones", {})
+PATHS = cfg["paths"]
 
-OUT_DIR = "data/processed/figures"
+OUT_DIR = PATHS.get("figures_dir",
+                    str(Path(PATHS["engagement_metrics"]).parent / "figures"))
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # Named-phase colours; year-based phases get colours auto-assigned below
@@ -85,7 +88,7 @@ def add_phase_legend(ax, phases):
 
 # ── Figure 1: Weekly message volume ─────────────────────────────────────────
 def fig_engagement():
-    eng_all = pd.read_csv("data/processed/engagement_metrics.csv")
+    eng_all = pd.read_csv(PATHS["engagement_metrics"])
     eng = eng_all[eng_all["metric"] == "weekly_volume"].copy()
     if eng.empty:
         print("  [08] engagement: no weekly_volume rows found")
@@ -134,7 +137,7 @@ def fig_engagement():
 
 # ── Figure 2: Network graph — one panel per phase ───────────────────────────
 def fig_network():
-    msg = pd.read_csv("data/interim/messages.csv")
+    msg = pd.read_csv(PATHS["messages_interim"])
     msg["timestamp"] = pd.to_datetime(msg["timestamp"])
     msg = (
         msg[msg["message_type"] != "system"]
@@ -202,7 +205,7 @@ def fig_network():
 
 # ── Figure 3: Sentiment trends ───────────────────────────────────────────────
 def fig_sentiment():
-    sent_all = pd.read_csv("data/processed/sentiment_metrics.csv")
+    sent_all = pd.read_csv(PATHS["sentiment_metrics"])
 
     # split into daily time-series and phase summaries
     daily = sent_all[sent_all["kind"] == "rolling_sentiment"].copy()
@@ -265,7 +268,7 @@ def fig_sentiment():
 
 # ── Figure 4: Fidelity heatmap ───────────────────────────────────────────────
 def fig_fidelity():
-    fid = pd.read_csv("data/processed/fidelity_metrics.csv")
+    fid = pd.read_csv(PATHS["fidelity_metrics"])
     cov = fid[fid["kind"] == "coverage"].copy()
     if cov.empty:
         print("  [08] fidelity: no coverage rows")
@@ -296,7 +299,7 @@ def fig_fidelity():
                 ax.text(j, i, f"{val:.2f}", ha="center", va="center",
                         fontsize=9, color="black" if val < 1.5 else "white")
 
-    plt.colorbar(im, ax=ax, label="Coverage (proportion of weeks with mention)")
+    plt.colorbar(im, ax=ax, label="Coverage (% of messages mentioning component)")
     ax.set_title("Figure 4  Theory of Change fidelity by component and phase\n"
                  "(green = strong coverage; red = gap)",
                  fontweight="bold", pad=10)
@@ -310,7 +313,7 @@ def fig_fidelity():
 # ── Figure 5: Case report profile ───────────────────────────────────────────
 def fig_case_reports():
     try:
-        cr = pd.read_csv("data/interim/case_reports.csv")
+        cr = pd.read_csv(PATHS["case_reports"])
     except FileNotFoundError:
         print("  [08] case_reports.csv not found — skipping Fig 5")
         return
@@ -326,7 +329,12 @@ def fig_case_reports():
 
     # panel A — top complaints
     if complaint_col:
-        top = cr[complaint_col].value_counts().head(10)
+        # normalise case/whitespace so variants merge
+        # (e.g. "appointment"/"Appointment", "chest pain"/"Chest Pain")
+        norm = (cr[complaint_col].dropna().astype(str)
+                .str.replace(r"\s+", " ", regex=True).str.strip().str.lower())
+        top = norm.value_counts().head(10)
+        top.index = [s.capitalize() for s in top.index]
         colors = plt.cm.Blues(np.linspace(0.4, 0.85, len(top)))[::-1]
         bars = ax1.barh(top.index[::-1], top.values[::-1], color=colors[::-1])
         for bar, val in zip(bars, top.values[::-1]):

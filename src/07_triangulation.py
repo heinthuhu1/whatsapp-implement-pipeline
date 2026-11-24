@@ -4,12 +4,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
-import yaml
 
-
-def load_settings(path: str = "config/settings.yaml") -> dict:
-    with open(path) as f:
-        return yaml.safe_load(f)
+from common import load_settings
 
 
 def _normalise_phase(s: pd.Series) -> pd.Series:

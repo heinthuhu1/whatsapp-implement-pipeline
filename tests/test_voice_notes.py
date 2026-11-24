@@ -89,7 +89,8 @@ class TestLoadExisting:
         mock_client.audio.translations.create.return_value = MagicMock(text="translation")
 
         import unittest.mock as um
-        with um.patch.object(vn, "get_duration", return_value=5.0):
+        with um.patch.object(vn, "get_duration", return_value=5.0), \
+                um.patch.object(vn, "_to_ogg_bytes", return_value=MagicMock()):
             vn.process_voice_notes(voice_dir, output_path, log_path, mock_client)
 
         # Only f2 should have been sent to the API

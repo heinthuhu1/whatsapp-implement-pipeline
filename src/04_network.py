@@ -6,23 +6,24 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 import pandas as pd
-import yaml
+
+from common import load_settings
 
 
 WINDOW_MINUTES = 30
 
 
-def load_settings(path: str = "config/settings.yaml") -> dict:
-    with open(path) as f:
-        return yaml.safe_load(f)
-
-
 def build_coactivity_edges(df: pd.DataFrame, window_minutes: int = WINDOW_MINUTES) -> pd.DataFrame:
-    """For every message, find all other messages within ±window_minutes.
-    Each unique (A, B) pair that co-occurs in a window contributes +1 to edge weight.
-    Self-loops are excluded. Returns an undirected weighted edge list.
+    """Undirected co-activity edge list with integer weights.
+
+    For every message by sender A, collect the set of distinct other senders
+    who posted at least once within ±window_minutes of it; each such sender B
+    adds +1 to the (A, B) count. Counts accumulate from both endpoints'
+    messages and are halved (integer division) to give the edge weight:
+    weight = (messages by A with B active nearby + messages by B with A
+    active nearby) // 2. Self-loops are excluded.
     """
-    df = df.sort_values("timestamp").reset_index(drop=True)
+    df = df.sort_values("timestamp", kind="stable").reset_index(drop=True)
     timestamps = df["timestamp"].values.astype("datetime64[ns]")
     senders = df["sender_code"].values
     window = np.timedelta64(window_minutes, "m")
@@ -73,20 +74,28 @@ def compute_node_metrics(
     G = nx.Graph()
     for _, e in edges.iterrows():
         if e["weight"] > 0:
-            G.add_edge(e["source"], e["target"], weight=int(e["weight"]))
+            # betweenness reads its weight as a path length, so stronger ties
+            # must be shorter: distance = 1 / weight
+            G.add_edge(e["source"], e["target"], weight=int(e["weight"]),
+                       distance=1.0 / float(e["weight"]))
 
     if G.number_of_nodes() == 0:
         return []
 
     deg_c = nx.degree_centrality(G)
-    bet_c = nx.betweenness_centrality(G, weight="weight", normalized=True)
+    bet_c = nx.betweenness_centrality(G, weight="distance", normalized=True)
     try:
         eig_c = nx.eigenvector_centrality(G, weight="weight", max_iter=1000)
     except nx.PowerIterationFailedConvergence:
         eig_c = {n: np.nan for n in G.nodes}
 
     msg_counts = df.groupby("sender_code").size().to_dict()
-    gini_val = gini(np.array(list(msg_counts.values()), dtype=float))
+    counts = np.array(list(msg_counts.values()), dtype=float)
+    gini_val = gini(counts)
+    n_senders = counts.size
+    # small-sample correction n / (n - 1), so a single dominant sender scores 1
+    gini_corr = gini_val * n_senders / (n_senders - 1) if n_senders > 1 else np.nan
+    top_share = counts.max() / counts.sum() if counts.sum() > 0 else np.nan
 
     rows = []
     for node in G.nodes:
@@ -99,6 +108,8 @@ def compute_node_metrics(
             "message_count": msg_counts.get(node, 0),
             "co_activity_partners": G.degree(node),
             "gini_coefficient": round(gini_val, 6),
+            "gini_corrected": round(gini_corr, 6),
+            "top_sender_share": round(top_share, 6),
         })
     return rows
 

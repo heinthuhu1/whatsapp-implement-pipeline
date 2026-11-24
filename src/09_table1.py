@@ -1,5 +1,5 @@
 """
-Stage 09 — Cross-domain Table 1: structural overview and domain-level metrics by phase.
+Stage 09 – Cross-domain Table 1: structural overview and domain-level metrics by phase.
 
 Reads pipeline outputs from earlier stages and produces a publication-ready
 Table 1 with rows grouped by corpus structure and the four analytic domains
@@ -17,14 +17,37 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import yaml
+
+from common import join_voice_translations, load_settings
+
+FOOTNOTES = [
+    "Content-bearing messages: free text plus voice notes with an English "
+    "translation (joined by media filename). Media placeholders, deleted-message "
+    "notices, untranslated voice notes, system notices and structured case-report "
+    "messages are excluded from sentiment and lexicon denominators.",
+    "Sentiment: mean DistilBERT SST-2 score (-1 to +1) over content-bearing "
+    "messages; n = messages scored.",
+    "Lexicon rates: % of content-bearing messages with a keyword at a word start "
+    "(case-insensitive; 'monitor' matches 'monitoring', 'now' does not match "
+    "'know'); shown as % (flagged/denominator).",
+    "ToC coverage: % of messages mentioning a component (word-start match, voice "
+    "notes replaced by their translation), shown as % (hits/messages); Overall "
+    "pools hits and messages across phases. 'Excl. case reports' drops "
+    "structured case-report messages from numerator and denominator.",
+    "Gini of message counts per sender; corrected = Gini x n/(n-1) for n "
+    "senders; top-sender share = largest sender's share of messages.",
+    "Response latency: a turn is a maximal run of consecutive messages by one "
+    "sender (system notices excluded); latency runs from the last message of a "
+    "turn to the first message of the next turn (always another sender). "
+    "Median (IQR) over turns with a next turn; n = such turns.",
+    "Urgency-flagged messages: content-bearing messages matching an urgency "
+    "keyword. Urgency-response latency: median time from a flagged message "
+    "to the next message by a different sender (n = flagged messages with a "
+    "later reply).",
+]
 
 
 # ── helpers ────────────────────────────────────────────────────────────────
-def load_settings(path: str = "config/settings.yaml") -> dict:
-    with open(path) as f:
-        return yaml.safe_load(f)
-
 
 def _norm_phase(v) -> str:
     """Normalise '2024.0' / 2024 / np.float to '2024'."""
@@ -48,7 +71,7 @@ def _gini(values) -> float:
 
 def _fmt_duration_hours(hours: float) -> str:
     if pd.isna(hours):
-        return "—"
+        return "–"
     if hours < 1:
         return f"{int(round(hours * 60))} min"
     return f"{hours:.1f} h"
@@ -101,6 +124,10 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     if vn is not None and "date" in vn.columns:
         vn["date"] = pd.to_datetime(vn["date"], errors="coerce")
         vn["phase_clean"] = vn["date"].dt.year.map(_norm_phase)
+        # Restrict analysis to the configured phase window. The full set of
+        # transcripts stays in voice_notes.csv; notes dated outside the phases
+        # (e.g. pre-2023) are excluded here so Overall == sum of phase columns.
+        vn = vn[vn["phase_clean"].isin(phase_names)].copy()
 
     eng = _safe_load_csv(paths["engagement_metrics"])
     net = _safe_load_csv(paths["network_metrics"])
@@ -167,38 +194,48 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     section("Corpus structure")
 
     row("Months observed",
-        lambda p: months_per_phase.get(p, "—"))
+        lambda p: months_per_phase.get(p, "–"))
     row("Active senders (n)",
         lambda p: int(non_system(slice_msg(p))["sender_code"].dropna().nunique()))
     row("Text messages and system notices (n)",
         lambda p: f"{len(slice_msg(p)):,}")
     row("Mean messages per month",
         lambda p: f"{len(slice_msg(p)) / months_per_phase[p]:.0f}"
-                  if p in months_per_phase and months_per_phase[p] else "—")
+                  if p in months_per_phase and months_per_phase[p] else "–")
     row("Voice notes posted (n)",
         lambda p: int((slice_msg(p)["message_type"] == "voice_note").sum()))
 
     def vn_transcribed(p):
         s = slice_vn(p)
         if s is None:
-            return "— (voice_notes.csv missing)"
-        return int((s["status"] == "success").sum()) if "status" in s.columns else "—"
+            return "– (voice_notes.csv missing)"
+        return int((s["status"] == "success").sum()) if "status" in s.columns else "–"
 
     row("Voice notes successfully transcribed (n)", vn_transcribed)
+
+    vn_linked = join_voice_translations(
+        non_system(msg)[non_system(msg)["message_type"] == "voice_note"],
+        paths.get("voice_notes_output"))
+
+    def vn_joined(p):
+        s = vn_linked if p == "Overall" else vn_linked[vn_linked["phase_clean"] == p]
+        return int(s["translation_en"].notna().sum())
+
+    row("Voice notes linked to an English translation (n)", vn_joined)
 
     def vn_duration(p):
         s = slice_vn(p)
         if s is None or "duration_seconds" not in s.columns:
-            return "—"
+            return "–"
         v = s["duration_seconds"].dropna()
-        return f"{v.mean():.1f}" if not v.empty else "—"
+        return f"{v.mean():.1f}" if not v.empty else "–"
 
     row("Voice note mean duration (s)", vn_duration)
 
     def mean_words(p):
         sub = text_only(slice_msg(p))
         if sub.empty:
-            return "—"
+            return "–"
         wc = sub["message"].fillna("").astype(str).str.split().str.len()
         return f"{wc.mean():.1f}"
 
@@ -206,7 +243,7 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
 
     row("Structured case reports extracted (n)",
         lambda p: f"{len(slice_case(p)):,}" if slice_case(p) is not None
-                  else "— (case_reports.csv missing)")
+                  else "– (case_reports.csv missing)")
 
     # Temporal domain ──────────────────────────────────────────────────────
     section("Temporal domain")
@@ -214,7 +251,7 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     def weekly_range(p):
         sub = non_system(slice_msg(p))
         if sub.empty:
-            return "—"
+            return "–"
         weekly = sub.set_index("timestamp").resample("W").size()
         rolling = weekly.rolling(4, min_periods=1).mean()
         return f"{rolling.min():.0f}–{rolling.max():.0f}"
@@ -224,7 +261,7 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     def velocity_count(p):
         v = slice_eng("velocity")
         if v is None or v.empty or "spike" not in v.columns:
-            return "—"
+            return "–"
         v = v.copy()
         v["date"] = pd.to_datetime(v["date"], errors="coerce")
         spikes = v[v["spike"].astype(bool)]
@@ -241,7 +278,7 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
         if p == "Overall":
             return int(len(s))
         if "gap_start" not in s.columns:
-            return "—"
+            return "–"
         s = s.copy()
         s["gap_start"] = pd.to_datetime(s["gap_start"], errors="coerce")
         return int((s["gap_start"].dt.year.astype("Int64").map(_norm_phase) == p).sum())
@@ -254,7 +291,7 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     def net_nodes(p):
         s = slice_net(p)
         if s is None:
-            return "—"
+            return "–"
         if p == "Overall":
             G = _full_graph()
             return G.number_of_nodes() if G else int(s["sender_code"].nunique())
@@ -265,10 +302,10 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     def net_edges(p):
         s = slice_net(p)
         if s is None or "co_activity_partners" not in s.columns:
-            return "—"
+            return "–"
         if p == "Overall":
             G = _full_graph()
-            return G.number_of_edges() if G else "—"
+            return G.number_of_edges() if G else "–"
         return int(s["co_activity_partners"].sum() // 2)
 
     row("Co-activity network edges (n)", net_edges)
@@ -276,19 +313,19 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     def net_density(p):
         s = slice_net(p)
         if s is None:
-            return "—"
+            return "–"
         if p == "Overall":
             G = _full_graph()
             if not G:
-                return "—"
+                return "–"
             try:
                 import networkx as nx
                 return f"{nx.density(G):.2f}"
             except Exception:
-                return "—"
+                return "–"
         n = int(s["sender_code"].nunique())
         if n < 2 or "co_activity_partners" not in s.columns:
-            return "—"
+            return "–"
         edges = s["co_activity_partners"].sum() / 2
         return f"{edges / (n * (n - 1) / 2):.2f}"
 
@@ -300,21 +337,48 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
             return f"{_gini(counts):.2f}"
         s = slice_net(p)
         if s is None or "gini_coefficient" not in s.columns:
-            return "—"
+            return "–"
         v = s["gini_coefficient"].dropna()
-        return f"{v.iloc[0]:.2f}" if not v.empty else "—"
+        return f"{v.iloc[0]:.2f}" if not v.empty else "–"
 
     row("Gini coefficient of message counts", gini_coef)
+
+    def _sender_counts(p):
+        sub = non_system(slice_msg(p))
+        return sub.groupby("sender_code").size().values
+
+    def gini_corrected(p):
+        if p != "Overall":
+            s = slice_net(p)
+            if s is not None and "gini_corrected" in s.columns:
+                v = s["gini_corrected"].dropna()
+                return f"{v.iloc[0]:.2f}" if not v.empty else "–"
+        counts = _sender_counts(p)
+        n = len(counts)
+        return f"{_gini(counts) * n / (n - 1):.2f}" if n > 1 else "–"
+
+    row("Gini coefficient, small-sample corrected", gini_corrected)
+
+    def top_share(p):
+        if p != "Overall":
+            s = slice_net(p)
+            if s is not None and "top_sender_share" in s.columns:
+                v = s["top_sender_share"].dropna()
+                return f"{v.iloc[0] * 100:.1f}" if not v.empty else "–"
+        counts = _sender_counts(p)
+        return f"{counts.max() / counts.sum() * 100:.1f}" if counts.sum() else "–"
+
+    row("Top-sender share of messages (%)", top_share)
 
     def partners_mean(p):
         if p == "Overall":
             G = _full_graph()
             if G:
                 degs = [G.degree(n) for n in G.nodes]
-                return f"{np.mean(degs):.1f}" if degs else "—"
+                return f"{np.mean(degs):.1f}" if degs else "–"
         s = slice_net(p)
         if s is None or "co_activity_partners" not in s.columns:
-            return "—"
+            return "–"
         return f"{s['co_activity_partners'].mean():.1f}"
 
     row("Mean co-activity partners per sender", partners_mean)
@@ -322,100 +386,112 @@ def compute_cells(settings: dict) -> tuple[list, list[str]]:
     # Content domain ───────────────────────────────────────────────────────
     section("Content domain")
 
-    def sentiment_mean(p):
-        ph = slice_sen("phase_summary")
+    def sen_row(p):
+        """Phase (or overall) summary row from 05_sentiment, or None."""
+        kind = "overall_summary" if p == "Overall" else "phase_summary"
+        ph = slice_sen(kind)
         if ph is None or ph.empty:
-            return "—"
-        if p == "Overall":
-            r = slice_sen("rolling_sentiment")
-            if r is not None and "sentiment_daily" in r.columns and r["sentiment_daily"].notna().any():
-                return f"{r['sentiment_daily'].mean():+.2f}"
-            return f"{ph['sentiment_mean'].mean():+.2f}"
-        sub = ph[ph["phase_clean"] == p]
-        if sub.empty:
-            return "—"
-        v = sub["sentiment_mean"].iloc[0]
-        return f"{v:+.2f}" if pd.notna(v) else "—"
+            return None
+        sub = ph if p == "Overall" else ph[ph["phase_clean"] == p]
+        return None if sub.empty else sub.iloc[0]
 
-    row("Mean sentiment score", sentiment_mean)
+    def sentiment_mean(p):
+        r = sen_row(p)
+        if r is None or "sentiment_n" not in r.index or pd.isna(r["sentiment_mean"]):
+            return "–"
+        return f"{r['sentiment_mean']:+.2f} (n={int(r['sentiment_n']):,})"
 
-    def rate(col):
+    row("Mean sentiment score, content-bearing messages", sentiment_mean)
+
+    def rate(name):
         def f(p):
-            ph = slice_sen("phase_summary")
-            if ph is None or ph.empty or col not in ph.columns:
-                return "—"
-            if p == "Overall":
-                msg_counts = {phase: len(slice_msg(phase)) for phase in phase_names}
-                total = sum(msg_counts.values())
-                if total == 0:
-                    return "—"
-                weighted = sum(
-                    r_[col] * msg_counts.get(r_["phase_clean"], 0)
-                    for _, r_ in ph.iterrows() if pd.notna(r_[col])
-                )
-                return f"{weighted / total * 100:.1f}"
-            sub = ph[ph["phase_clean"] == p]
-            if sub.empty:
-                return "—"
-            v = sub[col].iloc[0]
-            return f"{v * 100:.1f}" if pd.notna(v) else "—"
+            r = sen_row(p)
+            if r is None or f"{name}_n" not in r.index or not r["n_content"]:
+                return "–"
+            k, n = int(r[f"{name}_n"]), int(r["n_content"])
+            return f"{k / n * 100:.1f} ({k}/{n:,})"
         return f
 
-    row("Urgency-language rate (%)", rate("urgency_rate"))
-    row("Peer-support language rate (%)", rate("peer_support_rate"))
+    row("Urgency-language rate, % (n/N)", rate("urgency"))
+    row("Peer-support language rate, % (n/N)", rate("peer_support"))
 
-    def toc_extreme(kind):
+    def toc_extreme(kind, which):
         def f(p):
-            cov = slice_fid("coverage")
-            if cov is None or cov.empty:
-                return "—"
+            cov = slice_fid(kind)
+            if cov is None or cov.empty or "n_messages" not in cov.columns:
+                return "–"
             if p == "Overall":
-                return "—"
-            sub = cov[cov["phase_clean"] == p]
+                g = cov.groupby("component")
+                sub = pd.DataFrame({"hits": g["hits"].sum(),
+                                    "n_messages": g["n_messages"].sum()}).reset_index()
+            else:
+                sub = cov[cov["phase_clean"] == p]
             if sub.empty:
-                return "—"
-            r = sub.loc[sub["coverage_pct"].idxmax() if kind == "max"
-                       else sub["coverage_pct"].idxmin()]
+                return "–"
+            pct = sub["hits"] / sub["n_messages"] * 100
+            r = sub.loc[pct.idxmax() if which == "max" else pct.idxmin()]
             comp = str(r["component"]).replace("_", " ").capitalize()
-            return f"{comp} ({r['coverage_pct']:.1f})"
+            return (f"{comp} {r['hits'] / r['n_messages'] * 100:.1f} "
+                    f"({int(r['hits'])}/{int(r['n_messages']):,})")
         return f
 
-    row("Highest ToC component coverage (%)", toc_extreme("max"))
-    row("Lowest ToC component coverage (%)", toc_extreme("min"))
+    row("Highest ToC coverage, all messages, % (n/N)", toc_extreme("coverage", "max"))
+    row("Lowest ToC coverage, all messages, % (n/N)", toc_extreme("coverage", "min"))
+    row("Highest ToC coverage, excl. case reports, % (n/N)",
+        toc_extreme("coverage_excl_case_reports", "max"))
+    row("Lowest ToC coverage, excl. case reports, % (n/N)",
+        toc_extreme("coverage_excl_case_reports", "min"))
 
     # Behavioural domain ───────────────────────────────────────────────────
     section("Behavioural domain")
 
-    def latency_mean(p):
-        lat = slice_eng("response_latency")
-        if lat is None or lat.empty or "latency_minutes" not in lat.columns:
-            return "—"
-        if p == "Overall":
-            v = lat["latency_minutes"].mean()
-        else:
-            v = lat[lat["phase"].map(_norm_phase) == p]["latency_minutes"].mean()
-        return _fmt_duration_hours(v / 60.0) if pd.notna(v) else "—"
+    def lat_row(p):
+        lat = slice_eng("turn_latency")
+        if lat is None or lat.empty or "latency_median_min" not in lat.columns:
+            return None
+        sub = lat[lat["phase"].map(_norm_phase) == p]
+        return None if sub.empty else sub.iloc[0]
 
-    row("Mean response latency", latency_mean)
+    def latency_median(p):
+        r = lat_row(p)
+        if r is None or pd.isna(r["latency_median_min"]):
+            return "–"
+        return (f"{r['latency_median_min']:.0f} min ({r['latency_q1_min']:.0f}–"
+                f"{r['latency_q3_min']:.0f})")
+
+    row("Response latency between turns, median (IQR)", latency_median)
+    row("Turns followed by another sender's turn (n)",
+        lambda p: f"{int(lat_row(p)['n_turns']):,}" if lat_row(p) is not None else "–")
+    row("Turns answered within 1 h (%)",
+        lambda p: f"{lat_row(p)['share_le_60min'] * 100:.1f}"
+                  if lat_row(p) is not None and pd.notna(lat_row(p)["share_le_60min"]) else "–")
+
+    def urgency_count(p):
+        r = sen_row(p)
+        if r is None or "urgency_n" not in r.index:
+            return "–"
+        return int(r["urgency_n"])
+
+    row("Urgency-flagged messages (n)", urgency_count)
 
     def urgency_latency(p):
         resp = slice_fid("responsiveness")
         if resp is None or resp.empty or "latency_minutes" not in resp.columns:
-            return "—"
-        if p == "Overall":
-            v = resp["latency_minutes"].mean()
-        else:
-            v = resp[resp["phase_clean"] == p]["latency_minutes"].mean()
-        return _fmt_duration_hours(v / 60.0) if pd.notna(v) else "—"
+            return "–"
+        sub = resp if p == "Overall" else resp[resp["phase_clean"] == p]
+        if sub.empty:
+            return "– (n=0)"
+        v = sub["latency_minutes"].median()
+        return f"{_fmt_duration_hours(v / 60.0)} (n={len(sub)})"
 
-    row("Mean urgency-response latency", urgency_latency)
+    row("Urgency-response latency, median (n)", urgency_latency)
 
     def after_hours(p):
         start_h = settings.get("after_hours_start", 22)
         end_h = settings.get("after_hours_end", 7)
         sub = non_system(slice_msg(p))
         if sub.empty:
-            return "—"
+            return "–"
         hours = sub["timestamp"].dt.hour
         mask = (hours >= start_h) | (hours < end_h)
         return f"{mask.mean() * 100:.1f}"
@@ -443,7 +519,8 @@ def to_dataframe(rows, cols) -> pd.DataFrame:
 def to_text(rows, cols) -> str:
     """Render a fixed-width text table for terminal display and copy-paste."""
     label_w = max(len(label) for label, _ in rows) + 4
-    col_w = 22
+    col_w = max([22] + [len(str(v)) + 3 for _, vals in rows if vals
+                        for v in vals.values()])
 
     lines = ["Table 1 cell values".ljust(label_w)
              + "".join(c.rjust(col_w) for c in cols)]
@@ -455,6 +532,9 @@ def to_text(rows, cols) -> str:
             line = ("  " + label).ljust(label_w)
             line += "".join(str(vals[c]).rjust(col_w) for c in cols)
             lines.append(line)
+    lines.append("")
+    lines.append("Notes")
+    lines.extend(f"  {i}. {note}" for i, note in enumerate(FOOTNOTES, start=1))
     lines.append("")
     return "\n".join(lines)
 

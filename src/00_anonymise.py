@@ -10,7 +10,8 @@ import re
 from pathlib import Path
 
 import pandas as pd
-import yaml
+
+from common import load_settings
 
 TIMESTAMP_RE = re.compile(
     r"^\[?(\d{1,2}/\d{1,2}/\d{2,4}),\s(\d{1,2}:\d{2}(?::\d{2})?)[\s ]?(?:[AaPp][Mm])?\]?[\s ]?-\s"
@@ -19,34 +20,29 @@ TIMESTAMP_RE = re.compile(
 PK_MOBILE_RE = re.compile(
     r"(?:\+?92[\s\-]?3\d{2}[\s\-]?\d{7}|03\d{2}[\s\-]?\d{7}|03\d{9})"
 )
-GENERIC_NUMBER_RE = re.compile(r"\d{7,}")
+# Any other run of 7+ digits. The run must start at a digit boundary and must
+# not follow a WhatsApp media prefix such as "PTT-" or "IMG-", so the date
+# token in filenames like PTT-20241210-WA0037.opus is kept (stage 05 joins
+# voice notes to their transcripts by filename).
+GENERIC_NUMBER_RE = re.compile(r"(?<!\d)(?<![A-Z]{3}-)\d{7,}")
 MENTION_RE = re.compile(r"@⁨[^⁩]+⁩")
 
 # Words to exclude when tokenising names from the lookup
 NAME_STOP_TOKENS = {
     "emp", "osc", "alt", "alternate", "whatsapp", "dr", "mam",
     "the", "and", "mr", "mrs", "ms",
+    # redaction placeholders, so e.g. "[NUMBER]" is never renamed to a code
+    "number", "phone", "mention", "redacted",
 }
 
-SETTINGS_PATH = Path("config/settings.yaml")
-LOOKUP_PATH = Path("config/sender_lookup.csv")
-OUTPUT_PATH = Path("data/interim/anonymised_export.txt")
-WARNINGS_PATH = Path("data/interim/anonymisation_warnings.log")
-
-
-def load_settings(path: Path = SETTINGS_PATH) -> dict:
-    with open(path) as f:
-        return yaml.safe_load(f)
-
-
-def load_lookup(path: Path = LOOKUP_PATH) -> dict:
+def load_lookup(path: Path) -> dict:
     if not path.exists():
         return {}
     df = pd.read_csv(path)
     return dict(zip(df["real_name"].astype(str), df["coded_id"].astype(str)))
 
 
-def save_lookup(lookup: dict, path: Path = LOOKUP_PATH) -> None:
+def save_lookup(lookup: dict, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     rows = [{"real_name": k, "coded_id": v} for k, v in lookup.items()]
     df = pd.DataFrame(rows, columns=["real_name", "coded_id"])
@@ -222,26 +218,32 @@ def anonymise_text(
 
 def main() -> None:
     settings = load_settings()
-    input_path = Path(settings["paths"]["raw_input_file"])
+    paths = settings["paths"]
+    input_path = Path(paths["raw_input_file"])
+    lookup_path = Path(paths["sender_lookup"])
+    output_path = Path(paths["anonymised_export"])
+    warnings_path = Path(paths["anonymisation_warnings"])
     flag_list = settings.get("flag_names", [])
     aliases = settings.get("name_aliases", [])
     raw = input_path.read_text(encoding="utf-8")
 
-    lookup = load_lookup()
+    lookup = load_lookup(lookup_path)
     n_before = len(lookup)
 
     anonymised, lookup, phones_redacted, mentions_redacted, names_redacted, warnings = anonymise_text(
         raw, lookup, flag_list, aliases
     )
 
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(anonymised, encoding="utf-8")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(anonymised, encoding="utf-8")
 
-    WARNINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(WARNINGS_PATH, "w") as f:
+    warnings_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(warnings_path, "w") as f:
         f.write("\n".join(warnings))
 
-    save_lookup(lookup)
+    # Only rewrite the lookup when this run assigned new codes
+    if len(lookup) > n_before:
+        save_lookup(lookup, lookup_path)
 
     print(f"[00_anonymise] Lines processed:    {len(raw.splitlines())}")
     print(f"[00_anonymise] Unique senders:     {len(lookup)} ({len(lookup) - n_before} new)")
@@ -249,7 +251,7 @@ def main() -> None:
     print(f"[00_anonymise] Mentions redacted:  {mentions_redacted}")
     print(f"[00_anonymise] Names redacted:     {names_redacted}")
     print(f"[00_anonymise] Name flags raised:  {len(warnings)}")
-    print(f"[00_anonymise] Wrote {OUTPUT_PATH}")
+    print(f"[00_anonymise] Wrote {output_path}")
 
 
 if __name__ == "__main__":

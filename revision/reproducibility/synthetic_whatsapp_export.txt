@@ -1,0 +1,907 @@
+04/11/2024, 7:58 am - Messages and calls are end-to-end encrypted. Only people in this chat can read, listen to, or share them. Learn more.
+04/11/2024, 7:59 am - Kestrel Synthetic created group "Demo Ambulance Team"
+04/11/2024, 8:00 am - Kestrel Synthetic added Oriole Synthetic
+04/11/2024, 8:00 am - Kestrel Synthetic added Heron Synthetic
+04/11/2024, 8:00 am - Kestrel Synthetic added Plover Synthetic
+04/11/2024, 8:00 am - Kestrel Synthetic added Wren Synthetic
+04/11/2024, 8:00 am - Kestrel Synthetic added Lark Synthetic
+04/11/2024, 8:00 am - Kestrel Synthetic added Falcon Synthetic
+04/11/2024, 9:31 am - Kestrel Synthetic: 🚑🏥
+Date:4/11/2024
+Case No:01
+Gender: Male
+Initial Complaint: leg fracture
+Location: Village Alpha
+Time patient reached:05:56pm
+First Aid Provided: splint and bandage
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 07:05pm
+EMP Personnel Names: Heron and Plover
+04/11/2024, 9:35 am - Falcon Synthetic: Oxygen kit not working, used the spare kit instead
+05/11/2024, 7:49 am - Kestrel Synthetic: 🚑🏥
+Date:5/11/2024
+Case No:02
+Gender: female child
+Initial Complaint: stomach pain
+Location: Hamlet Charlie
+Time patient reached:08:07pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 09:46pm
+EMP Personnel Names: Heron and Plover
+05/11/2024, 8:01 am - Lark Synthetic: Supervisor sahab kal check karein ge
+05/11/2024, 8:13 am - Wren Synthetic: Well done team, good job on yesterday's call
+05/11/2024, 8:14 am - Kestrel Synthetic: Allah behtar kare
+06/11/2024, 10:13 am - Oriole Synthetic: Shukriya sab ka, bohat acha kaam kiya
+06/11/2024, 10:38 am - Oriole Synthetic: PTT-20241106-WA0009.opus (file attached)
+06/11/2024, 1:38 pm - Oriole Synthetic: PTT-20241106-WA0017.opus (file attached)
+06/11/2024, 2:18 pm - Kestrel Synthetic: Mashallah team ne zabardast kaam kiya
+07/11/2024, 10:02 am - Oriole Synthetic: PTT-20241107-WA0001.opus (file attached)
+07/11/2024, 10:27 am - Lark Synthetic: Supervisor will review the checklist on Friday
+08/11/2024, 8:57 am - Plover Synthetic: 🚑🏥
+Date:8/11/2024
+Case No:03
+Gender: Mal
+Initial Complaint: Fever
+Location: Village Alpha
+Time patient reached:10:26am
+First Aid Provided: wound dressing
+Name of Hospital Transported to:Rural Health Centre Demo
+Time Hospital was Reached: 11:06am
+EMP Personnel Names: Heron and Plover
+09/11/2024, 11:13 am - Heron Synthetic: 🚑🏥
+Date:9/11/2024
+Case No:04
+Gender: Female
+Initial Complaint: fever
+Location: Village Bravo
+Time patient reached:06:22pm
+First Aid Provided: vitals monitoring and positioning
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 07:01pm
+EMP Personnel Names: Heron and Plover
+11/11/2024, 10:56 am - Kestrel Synthetic: 🚑🏥
+Date:11/11/2024
+Case No:05
+Gender: Male
+Initial Complaint: fell from roof
+Location: Hamlet Charlie
+Time patient reached:10:22am
+First Aid Provided: wound dressing
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 12:13pm
+EMP Personnel Names: Heron and Plover
+11/11/2024, 11:00 am - Kestrel Synthetic: Great work on the delivery case
+12/11/2024, 8:50 am - Kestrel Synthetic: Supervisor sahab kal check karein ge
+12/11/2024, 8:51 am - Kestrel Synthetic: Gari wapis station pe aa gayi
+12/11/2024, 8:58 am - Kestrel Synthetic: <Media omitted>
+12/11/2024, 9:38 am - Kestrel Synthetic: Oxygen kit not working, used the spare kit instead
+13/11/2024, 9:03 am - Kestrel Synthetic: Patient ke ghar walay saath hain
+13/11/2024, 9:07 am - Lark Synthetic: Ambulance is ready for duty
+13/11/2024, 10:37 am - Kestrel Synthetic: PTT-20241113-WA0008.opus (file attached)
+14/11/2024, 8:43 am - Wren Synthetic: PTT-20241114-WA0009.opus (file attached)
+14/11/2024, 9:08 am - Kestrel Synthetic: السلام علیکم
+14/11/2024, 9:48 am - Heron Synthetic: 🚑🏥
+Date:14/11/2024
+Case No:06
+Gender: child
+Initial Complaint: burn
+Location: Hamlet Charlie
+Time patient reached:08:51pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 10:35pm
+EMP Personnel Names: Heron and Plover
+14/11/2024, 12:48 pm - Kestrel Synthetic: Supervisor sahab kal check karein ge
+14/11/2024, 2:18 pm - Wren Synthetic: جی ٹھیک ہے
+14/11/2024, 3:48 pm - Oriole Synthetic: Patient ko hospital shift kar diya hai
+15/11/2024, 8:49 am - Kestrel Synthetic: Ji theek hai
+15/11/2024, 8:50 am - Heron Synthetic: جی ٹھیک ہے
+15/11/2024, 8:57 am - Heron Synthetic: Gari wapis station pe aa gayi
+15/11/2024, 11:57 am - Kestrel Synthetic: Patient shifted to hospital safely
+15/11/2024, 11:58 am - Wren Synthetic: Hum Hamlet Echo ja rahe hain, patient ki halat theek nahi
+17/11/2024, 10:38 am - Heron Synthetic: <Media omitted>
+17/11/2024, 1:38 pm - Kestrel Synthetic: السلام علیکم
+18/11/2024, 9:55 am - Kestrel Synthetic: PTT-20241118-WA0002.opus (file attached)
+18/11/2024, 9:56 am - Falcon Synthetic: PTT-20241118-WA0010.opus (file attached)
+19/11/2024, 10:58 am - Oriole Synthetic: PTT-20241119-WA0007.opus (file attached)
+19/11/2024, 11:05 am - Lark Synthetic: شکریہ
+20/11/2024, 11:05 am - Oriole Synthetic: Please call the control room on 0300 0000000 if the radio fails
+20/11/2024, 1:17 pm - Heron Synthetic: 🚑🏥
+Date:20/11/2024
+Case No:07
+Gender: Mal
+Initial Complaint: Fever
+Location: Hamlet Charlie
+Time patient reached:08:15pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:Rural Health Centre Demo
+Time Hospital was Reached: 09:19pm
+EMP Personnel Names: Heron and Plover
+21/11/2024, 10:24 am - Heron Synthetic: 🚑🏥
+Date:21/11/2024
+Case No:08
+Gender: Mal
+Initial Complaint: BP high
+Location: Hamlet Echo
+Time patient reached:12:13pm
+First Aid Provided: vitals monitoring
+Name of Hospital Transported to:Rural Health Centre Demo
+Time Hospital was Reached: 01:26pm
+EMP Personnel Names: Heron and Plover
+22/11/2024, 10:30 am - Kestrel Synthetic: 🚑🏥
+Date:22/11/2024
+Case No:09
+Gender: Female
+Initial Complaint: chest pain
+Location: Hamlet Echo
+Time patient reached:08:07am
+First Aid Provided: wound dressing
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 08:51am
+EMP Personnel Names: Heron and Plover
+22/11/2024, 10:42 am - Plover Synthetic: 🚑🏥
+Date:22/11/2024
+Case No:10
+Gender: Male
+Initial Complaint: stomach pain
+Location: Village Delta
+Time patient reached:09:37am
+First Aid Provided: wound dressing
+Name of Hospital Transported to:Rural Health Centre Demo
+Time Hospital was Reached: 10:40am
+EMP Personnel Names: Heron and Plover
+22/11/2024, 10:46 am - Wren Synthetic: Supervisor will review the checklist on Friday
+22/11/2024, 11:26 am - Kestrel Synthetic: Shayad kal training ho gi
+23/11/2024, 9:37 am - Heron Synthetic: PTT-20241123-WA0009.opus (file attached)
+23/11/2024, 10:02 am - Falcon Synthetic: PTT-20241123-WA0013.opus (file attached)
+24/11/2024, 11:02 am - Heron Synthetic: PTT-20241124-WA0002.opus (file attached)
+25/11/2024, 8:29 am - Kestrel Synthetic: <Media omitted>
+25/11/2024, 8:41 am - Kestrel Synthetic: 🚑🏥
+Date:25/11/2024
+Case No:11
+Gender: male
+Initial Complaint: burn
+Location: Hamlet Echo
+Time patient reached:07:21pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 08:06pm
+EMP Personnel Names: Heron and Plover
+25/11/2024, 8:53 am - Oriole Synthetic: <Media omitted>
+25/11/2024, 8:57 am - Plover Synthetic: Done
+26/11/2024, 12:04 pm - Kestrel Synthetic: Ji theek hai
+26/11/2024, 12:08 pm - Plover Synthetic: Who is on night duty today?
+26/11/2024, 12:33 pm - Kestrel Synthetic: Aaj raat kaun duty pe hai?
+26/11/2024, 12:58 pm - Falcon Synthetic: Patient shifted to hospital safely
+26/11/2024, 1:38 pm - Kestrel Synthetic: Who is on night duty today?
+27/11/2024, 9:11 am - Lark Synthetic: <Media omitted>
+27/11/2024, 9:12 am - Plover Synthetic: IMG-20241127-WA0001.jpg (file attached)
+27/11/2024, 9:16 am - Oriole Synthetic: Assalam o alaikum sab ko
+28/11/2024, 10:29 am - Oriole Synthetic: PTT-20241128-WA0008.opus (file attached)
+28/11/2024, 10:31 am - Heron Synthetic: Shukriya sab ka, bohat acha kaam kiya
+28/11/2024, 10:33 am - Kestrel Synthetic: Ji theek hai
+28/11/2024, 10:37 am - Oriole Synthetic: PTT-20241128-WA0009.opus (file attached)
+28/11/2024, 11:17 am - Plover Synthetic: Mujhe lagta hai oxygen kam hai
+29/11/2024, 9:58 am - Oriole Synthetic: PTT-20241129-WA0008.opus (file attached)
+29/11/2024, 10:38 am - Oriole Synthetic: PTT-20241129-WA0013.opus (file attached)
+29/11/2024, 10:39 am - Wren Synthetic: Report bhej di hai group mein
+29/11/2024, 1:39 pm - Heron Synthetic: 🚑🏥
+Date:29/11/2024
+Case No:12
+Gender: female
+Initial Complaint: dead body
+Location: Village Alpha
+Time patient reached:09:46am
+First Aid Provided: vitals monitoring and positioning
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 10:50am
+EMP Personnel Names: Heron and Plover
+01/12/2024, 8:21 am - Plover Synthetic: PTT-20241201-WA0008.opus (file attached)
+01/12/2024, 8:46 am - Kestrel Synthetic: 🚑🏥
+Date:1/12/2024
+Case No:13
+Gender: female child
+Initial Complaint: leg fracture
+Location: Hamlet Echo
+Time patient reached:07:18pm
+First Aid Provided: vitals monitoring
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 08:13pm
+EMP Personnel Names: Heron and Plover
+01/12/2024, 9:26 am - Heron Synthetic: PTT-20241201-WA0012.opus (file attached)
+02/12/2024, 8:11 am - Lark Synthetic: Workshop on first aid SOP next month
+02/12/2024, 8:23 am - Kestrel Synthetic: PTT-20241202-WA0001.opus (file attached)
+02/12/2024, 9:53 am - Plover Synthetic: PTT-20241202-WA0004.opus (file attached)
+03/12/2024, 7:24 am - Kestrel Synthetic: Supervisor will review the checklist on Friday
+03/12/2024, 10:24 am - Heron Synthetic: PTT-20241203-WA0003.opus (file attached)
+03/12/2024, 10:25 am - Heron Synthetic: Good morning team
+04/12/2024, 10:26 am - Oriole Synthetic: <Media omitted>
+04/12/2024, 1:26 pm - Kestrel Synthetic: 🚑🏥
+Date:4/12/2024
+Case No:14
+Gender: Male
+Initial Complaint: asthma
+Location: Hamlet Echo
+Time patient reached:02:38pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 03:48pm
+EMP Personnel Names: Heron and Plover
+04/12/2024, 1:38 pm - Kestrel Synthetic: Workshop on first aid SOP next month
+05/12/2024, 10:18 am - Plover Synthetic: شکریہ
+05/12/2024, 10:43 am - Kestrel Synthetic: 🚑🏥
+Date:5/12/2024
+Case No:15
+Gender: male child
+Initial Complaint: fell from roof
+Location: Village Bravo
+Time patient reached:06:22pm
+First Aid Provided: none
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 07:27pm
+EMP Personnel Names: Heron and Plover
+05/12/2024, 10:47 am - Falcon Synthetic: Shayad kal training ho gi
+05/12/2024, 4:40 pm - Kestrel Synthetic: @⁨Heron Synthetic⁩ please send the report
+06/12/2024, 8:17 am - Heron Synthetic: Supervisor will review the checklist on Friday
+06/12/2024, 9:47 am - Kestrel Synthetic: PTT-20241206-WA0008.opus (file attached)
+06/12/2024, 9:59 am - Falcon Synthetic: Aaj raat kaun duty pe hai?
+06/12/2024, 11:29 am - Heron Synthetic: ان شاء اللہ
+06/12/2024, 12:09 pm - Oriole Synthetic: PTT-20241206-WA0016.opus (file attached)
+09/12/2024, 9:49 am - Heron Synthetic: Kal subah duty pe aa jaun ga
+09/12/2024, 9:56 am - Oriole Synthetic: <Media omitted>
+09/12/2024, 9:57 am - Oriole Synthetic: شکریہ
+09/12/2024, 10:04 am - Kestrel Synthetic: PTT-20241209-WA0006.opus (file attached)
+09/12/2024, 10:44 am - Falcon Synthetic: Monthly drill on Saturday at 10am
+10/12/2024, 8:34 am - Heron Synthetic: 🚑🏥
+Date:10/12/2024
+Case No:16
+Gender: female child
+Initial Complaint: chest pain
+Location: Village Alpha
+Time patient reached:03:19pm
+First Aid Provided: none
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 03:48pm
+EMP Personnel Names: Heron and Plover
+10/12/2024, 8:36 am - Falcon Synthetic: Mashallah team ne zabardast kaam kiya
+10/12/2024, 8:37 am - Heron Synthetic: 🚑🏥
+Date:10/12/2024
+Case No:16
+Gender: female female child
+Initial Complaint: chest pain
+Location: Village Alpha
+Time patient reached:03:19pm
+First Aid Provided: none
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 03:48pm
+EMP Personnel Names: Heron and Plover
+10/12/2024, 11:36 am - Kestrel Synthetic: <Media omitted>
+10/12/2024, 11:43 am - Kestrel Synthetic: 🚑🏥
+Date:10/12/2024
+Case No:17
+Gender: female child
+Initial Complaint: Fever
+Location: Hamlet Echo
+Time patient reached:11:11am
+First Aid Provided: wound dressing
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 12:10pm
+EMP Personnel Names: Heron and Plover
+11/12/2024, 10:02 am - Plover Synthetic: PTT-20241211-WA0004.opus (file attached)
+11/12/2024, 10:04 am - Heron Synthetic: Great work on the delivery case
+12/12/2024, 9:45 am - Heron Synthetic: 🚑🏥
+Date:12/12/2024
+Case No:18
+Gender: Male
+Initial Complaint: kidney problem
+Location: Village Alpha
+Time patient reached:02:08pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 03:56pm
+EMP Personnel Names: Heron and Plover
+12/12/2024, 9:46 am - Kestrel Synthetic: <Media omitted>
+12/12/2024, 12:46 pm - Heron Synthetic: PTT-20241212-WA0001.opus (file attached)
+12/12/2024, 12:58 pm - Oriole Synthetic: ان شاء اللہ
+13/12/2024, 1:19 pm - Heron Synthetic: 🚑🏥
+Date:13/12/2024
+Case No:19
+Gender: male child
+Initial Complaint: kidney problem
+Location: Village Delta
+Time patient reached:06:09pm
+First Aid Provided: vitals monitoring
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 07:06pm
+EMP Personnel Names: Heron and Plover
+13/12/2024, 4:19 pm - Wren Synthetic: <Media omitted>
+13/12/2024, 4:21 pm - Plover Synthetic: PTT-20241213-WA0005.opus (file attached)
+14/12/2024, 8:56 am - Falcon Synthetic: Stretcher ka pahiya kharab hai
+16/12/2024, 11:01 am - Kestrel Synthetic: 🚑🏥
+Date:16/12/2024
+Case No:20
+Gender: child
+Initial Complaint: fell from roof
+Location: Village Delta
+Time patient reached:02:59pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 04:55pm
+EMP Personnel Names: Heron and Plover
+16/12/2024, 2:01 pm - Heron Synthetic: Emergency call from Village Delta, team leaving now
+16/12/2024, 2:05 pm - Plover Synthetic: Noted
+16/12/2024, 2:45 pm - Kestrel Synthetic: <Media omitted>
+17/12/2024, 8:11 am - Oriole Synthetic: Hum Village Bravo ja rahe hain, patient ki halat theek nahi
+17/12/2024, 8:13 am - Plover Synthetic: PTT-20241217-WA0009.opus (file attached)
+17/12/2024, 8:17 am - Falcon Synthetic: Workshop on first aid SOP next month
+17/12/2024, 8:24 am - Wren Synthetic: PTT-20241217-WA0014.opus (file attached)
+17/12/2024, 9:54 am - Kestrel Synthetic: Ji theek hai
+17/12/2024, 9:58 am - Plover Synthetic: Gari tayar hai, fuel bhi full hai
+18/12/2024, 7:35 am - Oriole Synthetic: PTT-20241218-WA0007.opus (file attached)
+18/12/2024, 8:00 am - Heron Synthetic: PTT-20241218-WA0014.opus (file attached)
+18/12/2024, 8:04 am - Falcon Synthetic: PTT-20241218-WA0023.opus (file attached)
+18/12/2024, 8:08 am - Plover Synthetic: Assalam o alaikum sab ko
+19/12/2024, 11:47 am - Kestrel Synthetic: Supervisor sahab kal check karein ge
+19/12/2024, 2:47 pm - Kestrel Synthetic: Bhai jaldi aao, emergency hai
+19/12/2024, 2:51 pm - Falcon Synthetic: PTT-20241219-WA0006.opus (file attached)
+19/12/2024, 3:16 pm - Plover Synthetic: Ambulance is ready for duty
+20/12/2024, 10:53 am - Wren Synthetic: 🚑🏥
+Date:20/12/2024
+Case No:21
+Gender: 
+Initial Complaint: fever
+Location: Village Alpha
+Time patient reached:07:16pm
+First Aid Provided: vitals monitoring and positioning
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 07:54pm
+EMP Personnel Names: Heron and Plover
+20/12/2024, 10:56 am - Wren Synthetic: 🚑🏥
+Date:20/12/2024
+Case No:21
+Gender: female 
+Initial Complaint: fever
+Location: Village Alpha
+Time patient reached:07:16pm
+First Aid Provided: vitals monitoring and positioning
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 07:54pm
+EMP Personnel Names: Heron and Plover
+20/12/2024, 11:00 am - Lark Synthetic: Done
+20/12/2024, 11:04 am - Plover Synthetic: PTT-20241220-WA0008.opus (file attached)
+20/12/2024, 11:06 am - Heron Synthetic: 🚑🏥
+Date:20/12/2024
+Case No:22
+Gender: male
+Initial Complaint: fever
+Location: Village Bravo
+Time patient reached:05:01pm
+First Aid Provided: splint and bandage
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 06:29pm
+EMP Personnel Names: Heron and Plover
+20/12/2024, 11:07 am - Oriole Synthetic: Urgent: need a second stretcher at Hamlet Charlie
+21/12/2024, 10:46 am - Falcon Synthetic: PTT-20241221-WA0001.opus (file attached)
+21/12/2024, 11:11 am - Oriole Synthetic: Gari tayar hai, fuel bhi full hai
+21/12/2024, 11:15 am - Plover Synthetic: Patient ko hospital shift kar diya hai
+22/12/2024, 12:26 pm - Plover Synthetic: <Media omitted>
+23/12/2024, 9:28 am - Kestrel Synthetic: PTT-20241223-WA0001.opus (file attached)
+23/12/2024, 9:35 am - Kestrel Synthetic: 🚑🏥
+Date:23/12/2024
+Case No:23
+Gender: female
+Initial Complaint: dead body
+Location: Village Bravo
+Time patient reached:01:32pm
+First Aid Provided: wound dressing
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 02:35pm
+EMP Personnel Names: Heron and Plover
+23/12/2024, 9:39 am - Wren Synthetic: Urgent: need a second stretcher at Village Alpha
+23/12/2024, 9:51 am - Oriole Synthetic: مریض کو ہسپتال پہنچا دیا ہے
+27/12/2024, 7:50 am - Falcon Synthetic: I think the oxygen cylinder needs refilling
+27/12/2024, 8:02 am - Falcon Synthetic: PTT-20241227-WA0002.opus (file attached)
+28/12/2024, 9:33 am - Kestrel Synthetic: Please check vitals every 15 minutes during transfer
+28/12/2024, 9:35 am - Kestrel Synthetic: 🚑🏥
+Date:28/12/2024
+Case No:24
+Gender: female
+Initial Complaint: delivery
+Location: Hamlet Echo
+Time patient reached:12:33pm
+First Aid Provided: vitals monitoring
+Name of Hospital Transported to:Rural Health Centre Demo
+Time Hospital was Reached: 02:24pm
+EMP Personnel Names: Heron and Plover
+29/12/2024, 1:08 pm - Kestrel Synthetic: <Media omitted>
+29/12/2024, 1:15 pm - Heron Synthetic: Stretcher ka pahiya kharab hai
+29/12/2024, 2:45 pm - Wren Synthetic: PTT-20241229-WA0002.opus (file attached)
+30/12/2024, 7:53 am - Kestrel Synthetic: Please check vitals every 15 minutes during transfer
+30/12/2024, 9:23 am - Kestrel Synthetic: Bhai jaldi aao, emergency hai
+30/12/2024, 9:25 am - Oriole Synthetic: PTT-20241230-WA0008.opus (file attached)
+31/12/2024, 12:17 pm - Oriole Synthetic: Hum Hamlet Echo ja rahe hain, patient ki halat theek nahi
+31/12/2024, 12:57 pm - Falcon Synthetic: PTT-20241231-WA0003.opus (file attached)
+01/01/2025, 10:04 am - Kestrel Synthetic: PTT-20250101-WA0003.opus (file attached)
+01/01/2025, 10:05 am - Kestrel Synthetic: PTT-20250101-WA0012.opus (file attached)
+01/01/2025, 11:35 am - Lark Synthetic: PTT-20250101-WA0015.opus (file attached)
+01/01/2025, 12:15 pm - Plover Synthetic: IMG-20250101-WA0016.jpg (file attached)
+01/01/2025, 1:45 pm - Kestrel Synthetic: Please check vitals every 15 minutes during transfer
+02/01/2025, 7:42 am - Kestrel Synthetic: Received
+02/01/2025, 10:00 am - Kestrel Synthetic changed the group description
+03/01/2025, 7:48 am - Plover Synthetic: Vehicle checked, fuel is full
+03/01/2025, 7:55 am - Wren Synthetic: PTT-20250103-WA0009.opus (file attached)
+05/01/2025, 9:52 am - Oriole Synthetic: Supervisor will review the checklist on Friday
+05/01/2025, 9:59 am - Oriole Synthetic: Aaj raat kaun duty pe hai?
+05/01/2025, 10:39 am - Plover Synthetic: 🚑🏥
+Date:5/1/2025
+Case No:25
+Gender: child
+Initial Complaint: dog bite
+Location: Village Delta
+Time patient reached:03:56pm
+First Aid Provided: none
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 04:46pm
+EMP Personnel Names: Heron and Plover
+06/01/2025, 9:00 am - Kestrel Synthetic added Egret Synthetic
+06/01/2025, 9:37 am - Oriole Synthetic: Please share today's case reports
+06/01/2025, 9:39 am - Lark Synthetic: Shukriya sab ka, bohat acha kaam kiya
+06/01/2025, 9:43 am - Falcon Synthetic: جی ٹھیک ہے
+06/01/2025, 9:55 am - Kestrel Synthetic: 🚑🏥
+Date:6/1/2025
+Case No:26
+Gender: female
+Initial Complaint: asthma
+Location: Hamlet Echo
+Time patient reached:08:42am
+First Aid Provided: vitals monitoring and positioning
+Name of Hospital Transported to:Teaching Hospital Demo
+Time Hospital was Reached: 09:10am
+EMP Personnel Names: Heron and Plover
+06/01/2025, 10:07 am - Lark Synthetic: PTT-20250106-WA0003.opus (file attached)
+07/01/2025, 9:26 am - Lark Synthetic: <Media omitted>
+08/01/2025, 10:42 am - Heron Synthetic: 🚑🏥
+Date:8/1/2025
+Case No:27
+Gender: Mal
+Initial Complaint: dog bite
+Location: Village Bravo
+Time patient reached:11:16am
+First Aid Provided: oxygen given
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 12:43pm
+EMP Personnel Names: Heron and Plover
+08/01/2025, 11:22 am - Falcon Synthetic: PTT-20250108-WA0007.opus (file attached)
+08/01/2025, 12:52 pm - Heron Synthetic: PTT-20250108-WA0012.opus (file attached)
+08/01/2025, 12:59 pm - Kestrel Synthetic: 🚑🏥
+Date:8/1/2025
+Case No:28
+Gender: Mal
+Initial Complaint: fever and vomiting
+Location: Hamlet Echo
+Time patient reached:05:23pm
+First Aid Provided: wound dressing
+Name of Hospital Transported to:No hospital
+Time Hospital was Reached: 06:53pm
+EMP Personnel Names: Heron and Plover
+08/01/2025, 1:24 pm - Lark Synthetic: Thank you everyone for the quick response
+09/01/2025, 8:05 am - Wren Synthetic: PTT-20250109-WA0008.opus (file attached)
+09/01/2025, 8:17 am - Kestrel Synthetic: IMG-20250109-WA0009.jpg (file attached)
+09/01/2025, 9:47 am - Heron Synthetic: <Media omitted>
+10/01/2025, 8:48 am - Plover Synthetic: <Media omitted>
+10/01/2025, 8:49 am - Kestrel Synthetic: 🚑🏥
+Date:10/1/2025
+Case No:29
+Gender: Mal
+Initial Complaint: BP high
+Location: Village Alpha
+Time patient reached:08:55am
+First Aid Provided: vitals monitoring and positioning
+Name of Hospital Transported to:Rural Health Centre Demo
+Time Hospital was Reached: 10:44am
+EMP Personnel Names: Heron and Plover
+10/01/2025, 8:51 am - Oriole Synthetic: PTT-20250110-WA0002.opus (file attached)
+10/01/2025, 9:03 am - Plover Synthetic: 🚑🏥
+Date:10/1/2025
+Case No:30
+Gender: 
+Initial Complaint: stomach pain
+Location: Village Bravo
+Time patient reached:12:06pm
+First Aid Provided: oxygen given
+Name of Hospital Transported to:District Hospital Demo
+Time Hospital was Reached: 01:26pm
+EMP Personnel Names: Heron and Plover
+10/01/2025, 12:03 pm - Oriole Synthetic: Maybe we can do the refresher training next week
+11/01/2025, 9:02 am - Egret Synthetic: PTT-20250111-WA0007.opus (file attached)
+11/01/2025, 9:03 am - Plover Synthetic: PTT-20250111-WA0013.opus (file attached)
+11/01/2025, 9:15 am - Heron Synthetic: PTT-20250111-WA0014.opus (file attached)
+12/01/2025, 9:31 am - Kestrel Synthetic: <Media omitted>
+13/01/2025, 10:18 am - Heron Synthetic: Road blocked, taking the alternative route instead
+14/01/2025, 8:26 am - Oriole Synthetic: Received
+15/01/2025, 7:01 am - Falcon Synthetic: <Media omitted>
+15/01/2025, 10:01 am - Wren Synthetic: <Media omitted>
+15/01/2025, 10:02 am - Plover Synthetic: <Media omitted>
+15/01/2025, 10:03 am - Kestrel Synthetic: <Media omitted>
+16/01/2025, 8:05 am - Lark Synthetic: PTT-20250116-WA0004.opus (file attached)
+16/01/2025, 8:06 am - Heron Synthetic: *Case no 31
+Date: 16.01.2025
+Gender: Female
+Complaint: fever
+Pickup location: Village Alpha
+Pickup time: 14:05
+Destination: Teaching Hospital Demo
+Arrival time: 14:53
+First aid: vitals monitoring and positioning
+EMP personnel: Wren, Lark
+16/01/2025, 8:09 am - Heron Synthetic: *Case no 31
+Date: 16.01.2025
+Gender: female Female
+Complaint: fever
+Pickup location: Village Alpha
+Pickup time: 14:05
+Destination: Teaching Hospital Demo
+Arrival time: 14:53
+First aid: vitals monitoring and positioning
+EMP personnel: Wren, Lark
+16/01/2025, 8:10 am - Oriole Synthetic: PTT-20250116-WA0010.opus (file attached)
+17/01/2025, 8:01 am - Heron Synthetic: Stretcher repaired and back in the ambulance
+19/01/2025, 12:52 pm - Lark Synthetic: IMG-20250119-WA0001.jpg (file attached)
+20/01/2025, 9:15 am - Oriole Synthetic: Heron and Plover, well done on the night call
+20/01/2025, 9:48 am - Wren Synthetic: Allah behtar kare
+21/01/2025, 11:16 am - Kestrel Synthetic: مریض کو ہسپتال پہنچا دیا ہے
+21/01/2025, 11:56 am - Wren Synthetic: IMG-20250121-WA0001.jpg (file attached)
+21/01/2025, 12:08 pm - Oriole Synthetic: Oxygen kit not working, used the spare kit instead
+21/01/2025, 12:33 pm - Oriole Synthetic: Done
+21/01/2025, 2:03 pm - Oriole Synthetic: PTT-20250121-WA0009.opus (file attached)
+22/01/2025, 10:48 am - Kestrel Synthetic: *Case no 32
+Date: 22.01.2025
+Gender: Female
+Complaint: Fever
+Pickup location: Village Bravo
+Pickup time: 13:15
+Destination: District Hospital Demo
+Arrival time: 14:07
+First aid: wound dressing
+EMP personnel: Wren, Lark
+22/01/2025, 10:49 am - Oriole Synthetic: PTT-20250122-WA0008.opus (file attached)
+22/01/2025, 11:01 am - Heron Synthetic: PTT-20250122-WA0013.opus (file attached)
+22/01/2025, 11:13 am - Oriole Synthetic: PTT-20250122-WA0019.opus (file attached)
+23/01/2025, 10:16 am - Heron Synthetic: *Case no 33
+Date: 23.01.2025
+Gender: 
+Complaint: BP high
+Pickup location: Hamlet Charlie
+Pickup time: 13:13
+Destination: Teaching Hospital Demo
+Arrival time: 14:58
+First aid: wound dressing
+EMP personnel: Wren, Lark
+23/01/2025, 10:41 am - Oriole Synthetic: PTT-20250123-WA0006.opus (file attached)
+24/01/2025, 9:38 am - Heron Synthetic: *Case no 34
+Date: 24.01.2025
+Gender: Female
+Complaint: chest pain
+Pickup location: Village Delta
+Pickup time: 09:49
+Destination: Rural Health Centre Demo
+Arrival time: 10:28
+First aid: splint and bandage
+EMP personnel: Wren, Lark
+25/01/2025, 11:03 am - Wren Synthetic: Stretcher ka pahiya kharab hai
+25/01/2025, 11:15 am - Lark Synthetic: IMG-20250125-WA0001.jpg (file attached)
+26/01/2025, 11:30 am - Heron Synthetic: PTT-20250126-WA0005.opus (file attached)
+26/01/2025, 11:31 am - Kestrel Synthetic: Gari tayar hai, fuel bhi full hai
+27/01/2025, 8:55 am - Plover Synthetic: Done
+27/01/2025, 9:20 am - Wren Synthetic: Road blocked, taking the alternative route instead
+27/01/2025, 9:45 am - Kestrel Synthetic: IMG-20250127-WA0001.jpg (file attached)
+27/01/2025, 9:47 am - Kestrel Synthetic: <Media omitted>
+27/01/2025, 10:12 am - Plover Synthetic: *Case no 35
+Date: 27.01.2025
+Gender: Male
+Complaint: fever and vomiting
+Pickup location: Village Alpha
+Pickup time: 16:29
+Destination: Teaching Hospital Demo
+Arrival time: 16:56
+First aid: none
+EMP personnel: Wren, Lark
+28/01/2025, 8:01 am - Wren Synthetic: PTT-20250128-WA0008.opus (file attached)
+28/01/2025, 8:41 am - Oriole Synthetic: Shukriya sab ka, bohat acha kaam kiya
+28/01/2025, 8:43 am - Heron Synthetic: <Media omitted>
+28/01/2025, 12:00 pm - Oriole Synthetic: Dr Sparrow from the district office will visit on Monday
+29/01/2025, 7:30 am - Kestrel Synthetic: Reminder: follow the triage protocol for every patient
+29/01/2025, 9:00 am - Kestrel Synthetic: Thank you everyone for the quick response
+29/01/2025, 9:25 am - Oriole Synthetic: Monthly drill on Saturday at 10am
+29/01/2025, 9:29 am - Lark Synthetic: Allah behtar kare
+29/01/2025, 10:09 am - Heron Synthetic: Please call me when you reach Village Bravo
+30/01/2025, 7:34 am - Heron Synthetic: *Case no 36
+Date: 30.01.2025
+Gender: male child
+Complaint: burn
+Pickup location: Hamlet Echo
+Pickup time: 07:46
+Destination: District Hospital Demo
+Arrival time: 08:49
+First aid: vitals monitoring
+EMP personnel: Wren, Lark
+30/01/2025, 8:14 am - Heron Synthetic: Assalam o alaikum sab ko
+30/01/2025, 9:44 am - Kestrel Synthetic: السلام علیکم
+30/01/2025, 10:09 am - Plover Synthetic: Please share today's case reports
+30/01/2025, 10:13 am - Kestrel Synthetic: *Case no 37
+Date: 30.01.2025
+Gender: Mal
+Complaint: burn
+Pickup location: Village Alpha
+Pickup time: 20:46
+Destination: Teaching Hospital Demo
+Arrival time: 21:45
+First aid: none
+EMP personnel: Wren, Lark
+30/01/2025, 10:14 am - Plover Synthetic: PTT-20250130-WA0005.opus (file attached)
+30/01/2025, 10:16 am - Kestrel Synthetic: *Case no 37
+Date: 30.01.2025
+Gender: female Mal
+Complaint: burn
+Pickup location: Village Alpha
+Pickup time: 20:46
+Destination: Teaching Hospital Demo
+Arrival time: 21:45
+First aid: none
+EMP personnel: Wren, Lark
+31/01/2025, 9:31 am - Heron Synthetic: *Case no 38
+Date: 31.01.2025
+Gender: child
+Complaint: head injury
+Pickup location: Village Alpha
+Pickup time: 19:38
+Destination: Teaching Hospital Demo
+Arrival time: 20:22
+First aid: wound dressing
+EMP personnel: Wren, Lark
+31/01/2025, 11:01 am - Plover Synthetic: *Case no 39
+Date: 31.01.2025
+Gender: child
+Complaint: stomach pain
+Pickup location: Hamlet Echo
+Pickup time: 08:42
+Destination: Rural Health Centre Demo
+Arrival time: 09:07
+First aid: wound dressing
+EMP personnel: Wren, Lark
+31/01/2025, 11:03 am - Heron Synthetic: Who is on night duty today?
+31/01/2025, 11:04 am - Kestrel Synthetic: *Case no 40
+Date: 31.01.2025
+Gender: male
+Complaint: burn
+Pickup location: Village Alpha
+Pickup time: 12:44
+Destination: Rural Health Centre Demo
+Arrival time: 13:36
+First aid: vitals monitoring and positioning
+EMP personnel: Wren, Lark
+01/02/2025, 10:33 am - Falcon Synthetic: This message was deleted
+01/02/2025, 10:35 am - Wren Synthetic: Gari wapis station pe aa gayi
+01/02/2025, 10:37 am - Kestrel Synthetic: <Media omitted>
+02/02/2025, 10:34 am - Kestrel Synthetic: Aaj raat kaun duty pe hai?
+03/02/2025, 11:59 am - Kestrel Synthetic: PTT-20250203-WA0001.opus (file attached)
+03/02/2025, 12:00 pm - Heron Synthetic: Road blocked, taking the alternative route instead
+03/02/2025, 12:02 pm - Kestrel Synthetic: <Media omitted>
+03/02/2025, 1:32 pm - Kestrel Synthetic: <Media omitted>
+03/02/2025, 1:39 pm - Lark Synthetic: <Media omitted>
+03/02/2025, 1:46 pm - Plover Synthetic: Please check vitals every 15 minutes during transfer
+03/02/2025, 1:48 pm - Wren Synthetic: <Media omitted>
+03/02/2025, 3:18 pm - Falcon Synthetic: Rasta band hai, doosre raste se ja rahe hain
+03/02/2025, 3:19 pm - Plover Synthetic: Thank you everyone for the quick response
+03/02/2025, 3:31 pm - Kestrel Synthetic: PTT-20250203-WA0006.opus (file attached)
+03/02/2025, 6:31 pm - Heron Synthetic: PTT-20250203-WA0009.opus (file attached)
+03/02/2025, 8:01 pm - Plover Synthetic: Supervisor sahab kal check karein ge
+03/02/2025, 8:13 pm - Falcon Synthetic: PTT-20250203-WA0015.opus (file attached)
+03/02/2025, 8:53 pm - Plover Synthetic: PTT-20250203-WA0020.opus (file attached)
+03/02/2025, 8:55 pm - Kestrel Synthetic: Supervisor sahab kal check karein ge
+03/02/2025, 9:02 pm - Heron Synthetic: PTT-20250203-WA0021.opus (file attached)
+03/02/2025, 9:09 pm - Plover Synthetic: *Case no 41
+Date: 03.02.2025
+Gender: Male
+Complaint: fell from roof
+Pickup location: Village Bravo
+Pickup time: 20:52
+Destination: Rural Health Centre Demo
+Arrival time: 22:03
+First aid: oxygen given
+EMP personnel: Wren, Lark
+03/02/2025, 9:10 pm - Heron Synthetic: *Case no 42
+Date: 03.02.2025
+Gender: Mal
+Complaint: fever
+Pickup location: Hamlet Charlie
+Pickup time: 13:09
+Destination: Rural Health Centre Demo
+Arrival time: 14:27
+First aid: vitals monitoring
+EMP personnel: Wren, Lark
+03/02/2025, 9:12 pm - Kestrel Synthetic: *Case no 43
+Date: 03.02.2025
+Gender: male
+Complaint: kidney problem
+Pickup location: Village Delta
+Pickup time: 17:26
+Destination: District Hospital Demo
+Arrival time: 18:21
+First aid: none
+EMP personnel: Wren, Lark
+03/02/2025, 9:24 pm - Kestrel Synthetic: *Case no 44
+Date: 03.02.2025
+Gender: male
+Complaint: foot injury
+Pickup location: Hamlet Charlie
+Pickup time: 15:06
+Destination: Rural Health Centre Demo
+Arrival time: 16:51
+First aid: vitals monitoring
+EMP personnel: Wren, Lark
+03/02/2025, 10:04 pm - Heron Synthetic: Oxygen kit not working, used the spare kit instead
+03/02/2025, 10:05 pm - Kestrel Synthetic: <Media omitted>
+04/02/2025, 9:34 am - Plover Synthetic: PTT-20250204-WA0007.opus (file attached)
+04/02/2025, 9:35 am - Plover Synthetic: Patient ko hospital shift kar diya hai
+04/02/2025, 9:39 am - Plover Synthetic: PTT-20250204-WA0011.opus (file attached)
+04/02/2025, 9:40 am - Wren Synthetic: PTT-20250204-WA0016.opus (file attached)
+04/02/2025, 11:10 am - Kestrel Synthetic: Shukriya sab ka, bohat acha kaam kiya
+05/02/2025, 10:02 am - Heron Synthetic: <Media omitted>
+05/02/2025, 1:02 pm - Kestrel Synthetic: Thank you everyone for the quick response
+05/02/2025, 1:27 pm - Kestrel Synthetic: Please call me when you reach Hamlet Charlie
+05/02/2025, 1:39 pm - Kestrel Synthetic: Rasta band hai, doosre raste se ja rahe hain
+06/02/2025, 8:14 am - Kestrel Synthetic: Aaj raat kaun duty pe hai?
+07/02/2025, 10:58 am - Kestrel Synthetic: *Case no 45
+Date: 07.02.2025
+Gender: Female
+Complaint: kidney problem
+Pickup location: Village Alpha
+Pickup time: 10:33
+Destination: No hospital
+Arrival time: 11:49
+First aid: vitals monitoring
+EMP personnel: Wren, Lark
+07/02/2025, 11:10 am - Heron Synthetic: Mujhe lagta hai oxygen kam hai
+07/02/2025, 11:35 am - Kestrel Synthetic: PTT-20250207-WA0004.opus (file attached)
+07/02/2025, 12:00 pm - Heron Synthetic: <Media omitted>
+07/02/2025, 1:30 pm - Kestrel Synthetic: Aaj raat kaun duty pe hai?
+09/02/2025, 9:21 am - Falcon Synthetic: جی ٹھیک ہے
+10/02/2025, 8:29 am - Heron Synthetic: <Media omitted>
+10/02/2025, 6:30 pm - Lark Synthetic left
+11/02/2025, 8:09 am - Oriole Synthetic: PTT-20250211-WA0001.opus (file attached)
+11/02/2025, 8:11 am - Plover Synthetic: PTT-20250211-WA0009.opus (file attached)
+11/02/2025, 9:41 am - Falcon Synthetic: PTT-20250211-WA0015.opus (file attached)
+11/02/2025, 9:48 am - Heron Synthetic: Reminder: follow the triage protocol for every patient
+11/02/2025, 10:00 am - Plover Synthetic: *Case no 46
+Date: 11.02.2025
+Gender: female child
+Complaint: BP high
+Pickup location: Village Delta
+Pickup time: 10:30
+Destination: District Hospital Demo
+Arrival time: 11:29
+First aid: vitals monitoring and positioning
+EMP personnel: Wren, Lark
+11/02/2025, 10:04 am - Kestrel Synthetic: مریض کو ہسپتال پہنچا دیا ہے
+12/02/2025, 9:07 am - Heron Synthetic: Reminder: follow the triage protocol for every patient
+12/02/2025, 9:47 am - Kestrel Synthetic: Great work on the delivery case
+12/02/2025, 9:49 am - Oriole Synthetic: Mashallah team ne zabardast kaam kiya
+12/02/2025, 9:56 am - Wren Synthetic: Ji bhai
+13/02/2025, 8:04 am - Oriole Synthetic: PTT-20250213-WA0003.opus (file attached)
+13/02/2025, 8:08 am - Egret Synthetic: <Media omitted>
+13/02/2025, 8:12 am - Oriole Synthetic: Ji theek hai
+13/02/2025, 8:52 am - Wren Synthetic: Mujhe lagta hai oxygen kam hai
+13/02/2025, 9:32 am - Kestrel Synthetic: *Case no 47
+Date: 13.02.2025
+Gender: Male
+Complaint: kidney problem
+Pickup location: Village Bravo
+Pickup time: 20:38
+Destination: Teaching Hospital Demo
+Arrival time: 21:04
+First aid: none
+EMP personnel: Wren, Lark
+13/02/2025, 10:12 am - Heron Synthetic: جی ٹھیک ہے
+14/02/2025, 9:41 am - Plover Synthetic: PTT-20250214-WA0001.opus (file attached)
+14/02/2025, 9:43 am - Plover Synthetic: PTT-20250214-WA0008.opus (file attached)
+14/02/2025, 9:44 am - Oriole Synthetic: PTT-20250214-WA0013.opus (file attached)
+14/02/2025, 9:46 am - Plover Synthetic: Allah behtar kare
+16/02/2025, 8:13 am - Kestrel Synthetic: PTT-20250216-WA0004.opus (file attached)
+16/02/2025, 8:38 am - Heron Synthetic: Road blocked, taking the alternative route instead
+16/02/2025, 9:18 am - Kestrel Synthetic: Please call me when you reach Hamlet Echo
+17/02/2025, 10:36 am - Heron Synthetic: *Case no 48
+Date: 17.02.2025
+Gender: male
+Complaint: asthma
+Pickup location: Village Alpha
+Pickup time: 11:55
+Destination: District Hospital Demo
+Arrival time: 12:36
+First aid: wound dressing
+EMP personnel: Wren, Lark
+17/02/2025, 10:43 am - Wren Synthetic: *Case no 49
+Date: 17.02.2025
+Gender: male child
+Complaint: unconscious
+Pickup location: Hamlet Charlie
+Pickup time: 20:09
+Destination: No hospital
+Arrival time: 21:37
+First aid: splint and bandage
+EMP personnel: Wren, Lark
+17/02/2025, 10:44 am - Heron Synthetic: Vehicle checked, fuel is full
+17/02/2025, 1:44 pm - Oriole Synthetic: PTT-20250217-WA0009.opus (file attached)
+18/02/2025, 11:55 am - Heron Synthetic: PTT-20250218-WA0004.opus (file attached)
+18/02/2025, 1:25 pm - Kestrel Synthetic: *Case no 50
+Date: 18.02.2025
+Gender: male
+Complaint: stomach pain
+Pickup location: Hamlet Echo
+Pickup time: 10:14
+Destination: Rural Health Centre Demo
+Arrival time: 11:12
+First aid: wound dressing
+EMP personnel: Wren, Lark
+18/02/2025, 1:26 pm - Kestrel Synthetic: Shayad kal training ho gi
+18/02/2025, 9:50 pm - Falcon Synthetic: Gari ka tyre puncture, spare laga diya hai
+ab theek hai
+19/02/2025, 7:33 am - Plover Synthetic: PTT-20250219-WA0007.opus (file attached)
+19/02/2025, 10:33 am - Kestrel Synthetic: Monthly drill on Saturday at 10am
+19/02/2025, 1:33 pm - Kestrel Synthetic: IMG-20250219-WA0008.jpg (file attached)
+19/02/2025, 1:45 pm - Egret Synthetic: PTT-20250219-WA0015.opus (file attached)
+19/02/2025, 4:45 pm - Oriole Synthetic: PTT-20250219-WA0023.opus (file attached)
+19/02/2025, 4:46 pm - Kestrel Synthetic: <Media omitted>
+20/02/2025, 9:26 am - Falcon Synthetic: Bhai jaldi aao, emergency hai
+21/02/2025, 8:45 am - Plover Synthetic: <Media omitted>
+21/02/2025, 8:47 am - Oriole Synthetic: I think the oxygen cylinder needs refilling
+21/02/2025, 10:17 am - Plover Synthetic: Ji bhai
+21/02/2025, 10:19 am - Plover Synthetic: PTT-20250221-WA0009.opus (file attached)
+23/02/2025, 7:28 am - Kestrel Synthetic: Ji bhai
+23/02/2025, 7:32 am - Oriole Synthetic: PTT-20250223-WA0001.opus (file attached)
+24/02/2025, 11:07 am - Oriole Synthetic: Ji theek hai
+24/02/2025, 11:14 am - Kestrel Synthetic: <Media omitted>
+24/02/2025, 11:16 am - Kestrel Synthetic: Stretcher ka pahiya kharab hai
+24/02/2025, 11:23 am - Oriole Synthetic: PTT-20250224-WA0006.opus (file attached)
+25/02/2025, 10:22 am - Heron Synthetic: *Case no 51
+Date: 25.02.2025
+Gender: Female
+Complaint: leg fracture
+Pickup location: Hamlet Charlie
+Pickup time: 14:23
+Destination: Teaching Hospital Demo
+Arrival time: 14:52
+First aid: oxygen given
+EMP personnel: Wren, Lark
+25/02/2025, 10:29 am - Kestrel Synthetic: PTT-20250225-WA0007.opus (file attached)
+25/02/2025, 10:41 am - Plover Synthetic: السلام علیکم
+25/02/2025, 10:48 am - Oriole Synthetic: PTT-20250225-WA0011.opus (file attached)
+26/02/2025, 10:30 am - Oriole Synthetic: PTT-20250226-WA0005.opus (file attached)
+26/02/2025, 10:42 am - Wren Synthetic: Patient shifted to hospital safely
+26/02/2025, 10:54 am - Kestrel Synthetic: *Case no 52
+Date: 26.02.2025
+Gender: Mal
+Complaint: head injury
+Pickup location: Village Bravo
+Pickup time: 13:25
+Destination: Rural Health Centre Demo
+Arrival time: 15:15
+First aid: none
+EMP personnel: Wren, Lark
+26/02/2025, 12:24 pm - Kestrel Synthetic: Aaj raat kaun duty pe hai?
+26/02/2025, 3:24 pm - Kestrel Synthetic: *Case no 53
+Date: 26.02.2025
+Gender: female
+Complaint: fever and vomiting
+Pickup location: Village Bravo
+Pickup time: 14:29
+Destination: Rural Health Centre Demo
+Arrival time: 15:17
+First aid: wound dressing
+EMP personnel: Wren, Lark
+27/02/2025, 9:12 am - Heron Synthetic: PTT-20250227-WA0003.opus (file attached)
+27/02/2025, 9:52 am - Kestrel Synthetic: Ji theek hai
+27/02/2025, 10:17 am - Kestrel Synthetic: PTT-20250227-WA0011.opus (file attached)
+27/02/2025, 10:21 am - Heron Synthetic: PTT-20250227-WA0013.opus (file attached)
+28/02/2025, 8:43 am - Plover Synthetic: Maybe we can do the refresher training next week
