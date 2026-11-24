@@ -8,6 +8,11 @@ if [ -f "venv/bin/activate" ]; then
   source venv/bin/activate
 fi
 
+# Load environment variables from .env if present (e.g. OPENAI_API_KEY)
+if [ -f ".env" ]; then
+  set -a; source .env; set +a
+fi
+
 # Check for OpenAI key — only needed for stage 02 (voice notes)
 if [ -z "${OPENAI_API_KEY:-}" ]; then
   echo "WARNING: OPENAI_API_KEY is not set."

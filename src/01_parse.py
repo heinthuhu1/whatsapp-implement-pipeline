@@ -5,7 +5,8 @@ import re
 from pathlib import Path
 
 import pandas as pd
-import yaml
+
+from common import load_settings
 
 TIMESTAMP_RE = re.compile(
     r"^\[?(\d{1,2}/\d{1,2}/\d{2,4}),\s(\d{1,2}:\d{2}(?::\d{2})?)[\s ]?([AaPp][Mm])?\]?[\s ]?-\s"
@@ -22,11 +23,6 @@ MEDIA_PATTERNS = {
 SYSTEM_PATTERNS = [
     re.compile(r"added|removed|left|joined|changed the group|created group", re.IGNORECASE),
 ]
-
-
-def load_settings(path: str = "config/settings.yaml") -> dict:
-    with open(path) as f:
-        return yaml.safe_load(f)
 
 
 def parse_timestamp(date_str: str, time_str: str, ampm: str | None = None) -> pd.Timestamp:
@@ -113,14 +109,16 @@ CASE_FIELD_ALIASES = {
         r"^(location(\s*transported\s*to)?|pickup\s*location)$", re.IGNORECASE
     ),
     "time_patient_reached": re.compile(
-        r"^(time\s*patient\s*reached|pickup\s*time)$", re.IGNORECASE
+        r"^(time\s*patien(t)?(\s*reached)?|pickup\s*time)$", re.IGNORECASE
     ),
     "hospital": re.compile(
         r"^(name\s*of\s*hospital\s*transported\s*to|hospital\s*transported\s*to|transported\s*to|destination)$",
         re.IGNORECASE,
     ),
     "time_hospital_reached": re.compile(
-        r"^(time\s*(hospital\s*)?(was\s*)?reached|arrival\s*time)$", re.IGNORECASE
+        r"^(time\s*(hospital\s*)?(was\s*)?reached|time\s*hospital(\s*was)?"
+        r"|hospital\s*time\s*reached|arrival\s*time)$",
+        re.IGNORECASE,
     ),
     "first_aid": re.compile(r"^first\s*aid(\s*provided)?$", re.IGNORECASE),
     "emp_personnel": re.compile(
@@ -128,8 +126,18 @@ CASE_FIELD_ALIASES = {
     ),
 }
 
-# Matches "Field: value", "Field. value", or "Field; value"
-FIELD_LINE_RE = re.compile(r"^([A-Za-z][A-Za-z\s/\(\)\.]{1,45})[:\.\;][ \t]*(.*)")
+# Matches "Field: value", "Field. value", "Field; value" or "Field,: value"
+FIELD_LINE_RE = re.compile(r"^([A-Za-z][A-Za-z\s/\(\)\.]{1,45}),?[:\.\;][ \t]*(.*)")
+
+# 2024-25 template puts the hospital name mid-label:
+# "Name of Hospital: CMH Transported to: ambulance" or
+# "Name of Hospital.CMH Transported to: ambulance". The older form
+# "Name of hospital transported to: CMH" keeps the name after the label.
+HOSPITAL_LINE_RE = re.compile(
+    r"^name\s*(?:of\s*)?hospital\s*[:\.;]?\s*(.*?)\s*"
+    r"(?:transported\s*to\s*[:\.;]?\s*(.*))?$",
+    re.IGNORECASE,
+)
 
 # Matches "Case 87", "Case .103", "Case :133" — number on same line
 CASE_BARE_RE = re.compile(r"^\*?[Cc]ase\s*[:\.]?\s*(\d+)\s*$")
@@ -146,60 +154,86 @@ def _canonical_field(label: str) -> str | None:
     return None
 
 
+# trigger on "Case No", bare "Case 87" style, or ambulance emoji
+CASE_TRIGGER_RE = re.compile(r"case\s*no|case\s*\.?\s*\d+|🚑", re.IGNORECASE)
+
+
+def extract_case_fields(msg: str) -> dict | None:
+    """Parse one message as a structured case report.
+
+    Returns the field dict, or None when the message is not a case report
+    (no trigger, or neither a case number nor a complaint extracted).
+    Stages 05 and 06 use this, via common.is_case_report, to flag
+    case-report messages.
+    """
+    if not CASE_TRIGGER_RE.search(msg):
+        return None
+
+    fields: dict = {
+        "case_no": None,
+        "date": None,
+        "gender": None,
+        "initial_complaint": None,
+        "location": None,
+        "time_patient_reached": None,
+        "hospital": None,
+        "time_hospital_reached": None,
+        "first_aid": None,
+        "emp_personnel": None,
+    }
+
+    for line in msg.splitlines():
+        line = line.lstrip('‎').strip()
+
+        # handle "*Case no 65": number inline after "Case No"
+        inline = CASE_NO_INLINE_RE.match(line)
+        if inline and fields["case_no"] is None:
+            fields["case_no"] = inline.group(1)
+            continue
+
+        # handle "Case 87" / "Case .103" / "Case :133"
+        bare = CASE_BARE_RE.match(line)
+        if bare and fields["case_no"] is None:
+            fields["case_no"] = bare.group(1)
+            continue
+
+        # handle "Name of Hospital: CMH Transported to: ambulance"
+        hosp = HOSPITAL_LINE_RE.match(line)
+        if hosp:
+            if fields["hospital"] is None:
+                value = (hosp.group(1) or hosp.group(2) or "").strip(" .:;")
+                fields["hospital"] = value or None
+            continue
+
+        m = FIELD_LINE_RE.match(line)
+        if not m:
+            continue
+        label, value = m.group(1).strip(), m.group(2).strip()
+        canon = _canonical_field(label)
+        if canon and fields.get(canon) is None:
+            fields[canon] = value if value else None
+
+    # Only keep rows where we extracted at least a case number or complaint
+    if fields["case_no"] or fields["initial_complaint"]:
+        return fields
+    return None
+
+
 def parse_case_reports(messages_df: pd.DataFrame) -> pd.DataFrame:
     """Extract structured case report fields from multi-line case report messages."""
     records = []
-    # trigger on "Case No", bare "Case 87" style, or ambulance emoji
-    case_trigger = re.compile(r"case\s*no|case\s*\.?\s*\d+|🚑", re.IGNORECASE)
-
     for _, row in messages_df.iterrows():
         msg = str(row.get("message", ""))
-        if not case_trigger.search(msg):
+        fields = extract_case_fields(msg)
+        if fields is None:
             continue
-
-        fields: dict = {
+        records.append({
             "timestamp": row["timestamp"],
             "sender_code": row["sender_code"],
             "phase": row.get("phase"),
-            "case_no": None,
-            "date": None,
-            "gender": None,
-            "initial_complaint": None,
-            "location": None,
-            "time_patient_reached": None,
-            "hospital": None,
-            "time_hospital_reached": None,
-            "first_aid": None,
-            "emp_personnel": None,
+            **fields,
             "raw_message": msg,
-        }
-
-        for line in msg.splitlines():
-            line = line.lstrip('‎').strip()
-
-            # handle "*Case no 65" — number inline after "Case No"
-            inline = CASE_NO_INLINE_RE.match(line)
-            if inline and fields["case_no"] is None:
-                fields["case_no"] = inline.group(1)
-                continue
-
-            # handle "Case 87" / "Case .103" / "Case :133"
-            bare = CASE_BARE_RE.match(line)
-            if bare and fields["case_no"] is None:
-                fields["case_no"] = bare.group(1)
-                continue
-
-            m = FIELD_LINE_RE.match(line)
-            if not m:
-                continue
-            label, value = m.group(1).strip(), m.group(2).strip()
-            canon = _canonical_field(label)
-            if canon and fields.get(canon) is None:
-                fields[canon] = value if value else None
-
-        # Only keep rows where we extracted at least a case number or complaint
-        if fields["case_no"] or fields["initial_complaint"]:
-            records.append(fields)
+        })
 
     df = pd.DataFrame(records)
     if df.empty:
@@ -210,10 +244,11 @@ def parse_case_reports(messages_df: pd.DataFrame) -> pd.DataFrame:
                  "time_patient_reached", "hospital", "time_hospital_reached",
                  "first_aid", "emp_personnel"]
     df["_completeness"] = df[data_cols].notna().sum(axis=1)
-    df = (df.sort_values("_completeness", ascending=False)
+    # stable sorts: ties keep export order, so reruns pick the same row
+    df = (df.sort_values("_completeness", ascending=False, kind="stable")
             .drop_duplicates(subset=["case_no"], keep="first")
             .drop(columns=["_completeness"])
-            .sort_values("timestamp")
+            .sort_values("timestamp", kind="stable")
             .reset_index(drop=True))
     return df
 

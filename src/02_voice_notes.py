@@ -10,9 +10,10 @@ from datetime import datetime, date
 from pathlib import Path
 
 import pandas as pd
-import yaml
 from openai import OpenAI
 from tqdm import tqdm
+
+from common import load_settings
 
 FILENAME_RE = re.compile(
     r"(?:PTT|AUD)-(\d{4})(\d{2})(\d{2})-WA(\d+)\.opus$", re.IGNORECASE
@@ -20,11 +21,6 @@ FILENAME_RE = re.compile(
 
 BATCH_SIZE = 50
 RATE_LIMIT_DELAY = 0.5
-
-
-def load_settings(path: str = "config/settings.yaml") -> dict:
-    with open(path) as f:
-        return yaml.safe_load(f)
 
 
 def log_failure(log_path: Path, filename: str, stage: str, err: Exception) -> None:

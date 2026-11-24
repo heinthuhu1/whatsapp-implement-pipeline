@@ -1,0 +1,157 @@
+# WhatsApp Implementation Science Pipeline: configuration for the SYNTHETIC worked example
+# ------------------------------------------------------------------------------------
+# Identical to the configuration used for the Jheeng demonstration (same lexicons and
+# thresholds) except for the study phases, which match the synthetic export's date range.
+# All paths are relative to the run directory (see README.md).
+
+# -----------------------------------------------------------
+# STEP 1: Point to your WhatsApp export file
+# -----------------------------------------------------------
+paths:
+  raw_input_file: data/raw/whatsapp_export.txt   # rename your export to this
+  input_file: data/interim/anonymised_export.txt
+  role_mapping: config/role_mapping.csv
+  sender_lookup: config/sender_lookup.csv
+  anonymised_export: data/interim/anonymised_export.txt
+  anonymisation_warnings: data/interim/anonymisation_warnings.log
+  voice_notes_dir: data/raw/voice_notes/
+  voice_notes_output: data/processed/voice_notes.csv
+  messages_interim: data/interim/messages.csv
+  case_reports: data/interim/case_reports.csv
+  transcription_failures: data/interim/transcription_failures.log
+  engagement_metrics: data/processed/engagement_metrics.csv
+  network_metrics: data/processed/network_metrics.csv
+  network_graph: data/processed/network_edges.graphml
+  sentiment_metrics: data/processed/sentiment_metrics.csv
+  fidelity_metrics: data/processed/fidelity_metrics.csv
+  implementation_summary: data/processed/implementation_summary.csv
+  table1_overview: data/processed/table1_overview.csv
+
+# -----------------------------------------------------------
+# STEP 2: Define your study phases
+# Each phase needs a name, start date, and end date.
+# You can have as many phases as your study design requires.
+# Example below uses calendar years: adjust to your timeline.
+# -----------------------------------------------------------
+phases:
+  - name: "2024"
+    start: "2024-11-04"
+    end: "2024-12-31"
+  - name: "2025"
+    start: "2025-01-01"
+    end: "2025-02-28"
+
+# -----------------------------------------------------------
+# STEP 3: Set your programme milestone dates (optional)
+# Leave empty if your project has no fixed milestones.
+# -----------------------------------------------------------
+milestones: {}
+
+# -----------------------------------------------------------
+# STEP 4: Customise keyword lists for your context
+# Add terms in any language your group uses.
+# These drive the sentiment and fidelity analyses.
+# -----------------------------------------------------------
+
+# Words that signal urgency or emergency
+urgency_keywords:
+  - urgent
+  - emergency
+  - immediately
+  - asap
+  - critical
+  - help
+  - now
+
+# Words that signal uncertainty or hesitation
+hedging_keywords:
+  - maybe
+  - perhaps
+  - might
+  - possibly
+  - not sure
+  - i think
+
+# Theory of Change components: add keywords relevant to YOUR intervention.
+# Each top-level key becomes a component in the fidelity analysis.
+# Rename, add, or remove components to match your ToC.
+toc_component_keywords:
+  training:
+    - training
+    - workshop
+    - refresher
+    - drill
+    - practice
+  coordination:
+    - dispatch
+    - call
+    - rescue
+    - pickup
+    - respond
+  clinical_protocol:
+    - protocol
+    - triage
+    - vitals
+    - sop
+    - checklist
+  equipment:
+    - equipment
+    - kit
+    - stretcher
+    - oxygen
+    - defibrillator
+  supervision:
+    - supervisor
+    - incharge
+    - review
+    - monitor
+    - oversight
+
+# Words that suggest workarounds or implementation barriers
+workaround_keywords:
+  - workaround
+  - instead
+  - bypass
+  - not working
+  - broken
+  - alternative
+
+# Words that signal peer support or positive recognition
+peer_support_keywords:
+  - well done
+  - good job
+  - thank you
+  - proud
+  - appreciate
+  - thanks
+  - great work
+
+# -----------------------------------------------------------
+# STEP 5 (optional): Anonymisation helpers
+# name_aliases: surnames or name variants found in message
+#   bodies but not in sender display names. Each will be
+#   replaced with [REDACTED] in the anonymised export.
+# flag_names: common given names to flag for manual review
+#   (they appear in the warnings log but are NOT auto-redacted).
+# -----------------------------------------------------------
+name_aliases: []
+  # - Smith
+  # - Johnson
+
+flag_names:
+  - Sparrow
+  # - James
+  # - Maria
+
+# -----------------------------------------------------------
+# Advanced settings (safe to leave as defaults)
+# -----------------------------------------------------------
+
+# ISO 639-1 language code for voice note transcription (e.g. "ur", "sw", "fr").
+# Leave blank to let Whisper auto-detect the language.
+transcription_language: "ur"
+
+silence_threshold_hours: 48   # gap length that counts as a silence period
+rolling_window_days: 7        # rolling window for engagement trend lines
+after_hours_start: 22         # hour (24h) after-hours period starts
+after_hours_end: 6            # hour (24h) after-hours period ends

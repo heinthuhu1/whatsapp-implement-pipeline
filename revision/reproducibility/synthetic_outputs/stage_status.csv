@@ -1,0 +1,11 @@
+stage,status,seconds
+00_anonymise,ok,0.2
+01_parse,ok,0.3
+02_voice_notes,skipped (hosted API; synthetic voice_notes.csv supplied),0.0
+03_engagement,ok,0.2
+04_network,ok,0.3
+05_sentiment,ok,7.1
+06_fidelity,ok,0.2
+07_triangulation,ok,0.2
+08_visualise,ok,0.7
+09_table1,ok,0.3

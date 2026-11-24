@@ -58,7 +58,7 @@ def test_sender_name_replacement():
         "12/04/2024, 10:16 AM - Sara Supervisor: second\n"
         "12/04/2024, 10:17 AM - John Medic: third\n"
     )
-    out, lookup, _, _ = anon.anonymise_text(raw, {}, [])
+    out, lookup, *_ = anon.anonymise_text(raw, {}, [])
     assert "John Medic" not in out
     assert "Sara Supervisor" not in out
     assert lookup["John Medic"] == "P001"
@@ -80,7 +80,7 @@ def test_lookup_persistence_across_runs(tmp_path):
         "12/04/2024, 10:15 AM - Alice: hi\n"
         "12/04/2024, 10:16 AM - Charlie: new person\n"
     )
-    out, extended, _, _ = anon.anonymise_text(raw, reloaded, [])
+    out, extended, *_ = anon.anonymise_text(raw, reloaded, [])
     assert extended["Alice"] == "P001"  # stable
     assert extended["Bob"] == "P002"    # preserved even if absent from new run
     assert extended["Charlie"] == "P003"  # next free code
@@ -106,7 +106,7 @@ def test_name_flag_not_substring():
 
 def test_name_flag_not_auto_redacted():
     raw = "12/04/2024, 10:15 AM - P001: Ahmed came to help\n"
-    out, _, _, warnings = anon.anonymise_text(raw, {"P001": "P001"}, ["Ahmed"])
+    out, _, _, _, _, warnings = anon.anonymise_text(raw, {"P001": "P001"}, ["Ahmed"])
     assert "Ahmed" in out  # not redacted, just flagged
     assert any("Ahmed" in w for w in warnings)
 
@@ -116,10 +116,44 @@ def test_end_to_end_anonymisation():
         "12/04/2024, 10:15 AM - John Medic: Call 0321-1234567 about Ahmed\n"
         "12/04/2024, 10:16 AM - Sara: ok\n"
     )
-    out, lookup, phones, warnings = anon.anonymise_text(raw, {}, ["Ahmed"])
+    out, lookup, phones, _, _, warnings = anon.anonymise_text(raw, {}, ["Ahmed"])
     assert "John Medic" not in out
     assert "0321-1234567" not in out
     assert "[PHONE]" in out
     assert phones == 1
     assert any("Ahmed" in w for w in warnings)
     assert len(lookup) == 2
+
+
+def test_media_filename_date_not_redacted():
+    for name in ("PTT-20241210-WA0037.opus", "AUD-20251002-WA0085.opus",
+                 "IMG-20260325-WA0127.jpg", "VID-20251017-WA0024.mp4"):
+        out, n = anon.redact_phones(f"{name} (file attached)")
+        assert name in out
+        assert n == 0
+
+
+def test_long_number_still_redacted_next_to_filename():
+    text = "PTT-20241210-WA0037.opus ref 98765432 and https://x.com/news/1234567/a"
+    out, n = anon.redact_phones(text)
+    assert "PTT-20241210-WA0037.opus" in out
+    assert "98765432" not in out and "1234567" not in out
+    assert n == 2
+
+
+def test_number_inside_longer_digit_run_redacted_whole():
+    # a 7+ digit run must be redacted from its first digit
+    out, _ = anon.redact_phones("X-123456789")
+    assert out == "X-[NUMBER]"
+
+
+def test_placeholder_not_renamed_by_name_redaction():
+    # a sender whose display name contains "Number" must not turn the
+    # [NUMBER] placeholder into their code
+    raw = (
+        "12/04/2024, 10:15 AM - Alternate Number Testuser: hi\n"
+        "12/04/2024, 10:16 AM - John Medic: ref 98765432 and PTT-20240412-WA0001.opus\n"
+    )
+    out, lookup, *_ = anon.anonymise_text(raw, {}, [])
+    assert "[NUMBER]" in out
+    assert "PTT-20240412-WA0001.opus" in out

@@ -1,6 +1,11 @@
-data/raw/
-data/interim/
-data/processed/
+# All participant data stays local — never commit anything under data/
+data/
+# Raw voice-note drops for other programmes (participant data)
+Maseeha VN *
+# Root-level WhatsApp chat exports (participant data)
+Pind_Chat_Anonymised*
+WhatsApp Chat with*
+WhatsApp_Chat_with*
 docs/
 config/role_mapping.csv
 config/sender_lookup.csv

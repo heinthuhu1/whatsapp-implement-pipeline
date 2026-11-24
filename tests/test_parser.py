@@ -82,3 +82,24 @@ def test_classify_message_text_default():
 
 def test_classify_image():
     assert parse_module.classify_message("IMG-20240412-WA0001.jpg (file attached)") == "image"
+
+
+def test_case_report_2025_label_variants():
+    msg = ("🚑🏥\nDate:22:2.2025\nCase :158\nGender:female\nInitial Complaint: fever\n"
+           "Time patien:10:30am\nName of Hospital.CMH Transported to: ambulance\n"
+           "Time Hospital was,: 11:05am")
+    f = parse_module.extract_case_fields(msg)
+    assert f["case_no"] == "158"
+    assert f["time_patient_reached"] == "10:30am"
+    assert f["hospital"] == "CMH"
+    assert f["time_hospital_reached"] == "11:05am"
+
+
+def test_case_report_hospital_after_label():
+    f = parse_module.extract_case_fields(
+        "Case No: 3\nName of hospital transported to: BHQ")
+    assert f["hospital"] == "BHQ"
+
+
+def test_not_a_case_report():
+    assert parse_module.extract_case_fields("in case no one replies, call me") is None

@@ -1,0 +1,94 @@
+filename,date,sequence,duration_seconds,transcription_ur,translation_en,status
+PTT-20241106-WA0009.opus,2024-11-06,9,34.82,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241106-WA0017.opus,2024-11-06,17,7.14,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241107-WA0001.opus,2024-11-07,1,17.66,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241113-WA0008.opus,2024-11-13,8,14.64,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20241114-WA0009.opus,2024-11-14,9,8.87,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241118-WA0002.opus,2024-11-18,2,15.53,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241118-WA0010.opus,2024-11-18,10,41.59,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241119-WA0007.opus,2024-11-19,7,12.86,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20241123-WA0009.opus,2024-11-23,9,17.89,دوسری ٹیم بھیجیں یہ ایمرجنسی ہے,"Please send the second team, this is an emergency.",success
+PTT-20241123-WA0013.opus,2024-11-23,13,20.46,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241124-WA0002.opus,2024-11-24,2,36.89,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20241128-WA0008.opus,2024-11-28,8,11.93,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241128-WA0009.opus,2024-11-28,9,11.1,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20241129-WA0008.opus,2024-11-29,8,8.96,دوسری ٹیم بھیجیں یہ ایمرجنسی ہے,"Please send the second team, this is an emergency.",success
+PTT-20241129-WA0013.opus,2024-11-29,13,33.97,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241201-WA0008.opus,2024-12-01,8,7.83,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241201-WA0012.opus,2024-12-01,12,9.55,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20241202-WA0001.opus,2024-12-02,1,31.77,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20241202-WA0004.opus,2024-12-02,4,10.34,دوسری ٹیم بھیجیں یہ ایمرجنسی ہے,"Please send the second team, this is an emergency.",success
+PTT-20241203-WA0003.opus,2024-12-03,3,28.03,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20241206-WA0008.opus,2024-12-06,8,23.74,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20241206-WA0016.opus,2024-12-06,16,23.9,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241209-WA0006.opus,2024-12-09,6,4.11,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20241211-WA0004.opus,2024-12-11,4,15.35,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20241212-WA0001.opus,2024-12-12,1,15.82,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241213-WA0005.opus,2024-12-13,5,29.51,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20241217-WA0009.opus,2024-12-17,9,38.24,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241217-WA0014.opus,2024-12-17,14,40.1,دوسری ٹیم بھیجیں یہ ایمرجنسی ہے,"Please send the second team, this is an emergency.",success
+PTT-20241218-WA0007.opus,2024-12-18,7,34.41,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241218-WA0014.opus,2024-12-18,14,38.38,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20241218-WA0023.opus,2024-12-18,23,29.52,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20241219-WA0006.opus,2024-12-19,6,18.26,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20241220-WA0008.opus,2024-12-20,8,34.55,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20241221-WA0001.opus,2024-12-21,1,32.71,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20241223-WA0001.opus,2024-12-23,1,16.6,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20241227-WA0002.opus,2024-12-27,2,25.01,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20241229-WA0002.opus,2024-12-29,2,3.89,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20241230-WA0008.opus,2024-12-30,8,26.28,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20241231-WA0003.opus,2024-12-31,3,44.05,دوسری ٹیم بھیجیں یہ ایمرجنسی ہے,"Please send the second team, this is an emergency.",success
+PTT-20250101-WA0003.opus,2025-01-01,3,35.4,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250101-WA0012.opus,2025-01-01,12,26.17,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250101-WA0015.opus,2025-01-01,15,16.51,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250103-WA0009.opus,2025-01-03,9,42.62,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20250106-WA0003.opus,2025-01-06,3,36.24,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250108-WA0007.opus,2025-01-08,7,12.5,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250108-WA0012.opus,2025-01-08,12,31.34,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20250109-WA0008.opus,2025-01-09,8,39.28,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20250110-WA0002.opus,2025-01-10,2,20.45,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250111-WA0007.opus,2025-01-11,7,44.29,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20250111-WA0013.opus,2025-01-11,13,3.02,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250111-WA0014.opus,2025-01-11,14,28.97,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250116-WA0004.opus,2025-01-16,4,28.78,دوسری ٹیم بھیجیں یہ ایمرجنسی ہے,"Please send the second team, this is an emergency.",success
+PTT-20250116-WA0010.opus,2025-01-16,10,41.67,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250121-WA0009.opus,2025-01-21,9,3.12,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250122-WA0008.opus,2025-01-22,8,22.32,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20250122-WA0013.opus,2025-01-22,13,43.61,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250122-WA0019.opus,2025-01-22,19,32.78,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250123-WA0006.opus,2025-01-23,6,11.99,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20250126-WA0005.opus,2025-01-26,5,34.01,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20250128-WA0008.opus,2025-01-28,8,32.2,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250130-WA0005.opus,2025-01-30,5,14.39,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20250203-WA0001.opus,2025-02-03,1,36.36,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250203-WA0006.opus,2025-02-03,6,44.18,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250203-WA0009.opus,2025-02-03,9,3.74,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20250203-WA0015.opus,2025-02-03,15,44.19,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20250203-WA0020.opus,2025-02-03,20,5.07,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250203-WA0021.opus,2025-02-03,21,44.39,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250204-WA0007.opus,2025-02-04,7,31.99,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250204-WA0011.opus,2025-02-04,11,40.42,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250204-WA0016.opus,2025-02-04,16,40.28,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250207-WA0004.opus,2025-02-07,4,27.48,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250211-WA0001.opus,2025-02-11,1,4.49,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20250211-WA0009.opus,2025-02-11,9,5.41,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250211-WA0015.opus,2025-02-11,15,10.32,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250213-WA0003.opus,2025-02-13,3,40.24,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250214-WA0001.opus,2025-02-14,1,40.46,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250214-WA0008.opus,2025-02-14,8,35.7,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250214-WA0013.opus,2025-02-14,13,8.63,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250216-WA0004.opus,2025-02-16,4,4.65,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250217-WA0009.opus,2025-02-17,9,8.25,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250218-WA0004.opus,2025-02-18,4,17.25,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250219-WA0007.opus,2025-02-19,7,3.43,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250219-WA0015.opus,2025-02-19,15,25.21,آج سب کی محنت کا شکریہ,Thank you all for your hard work today.,success
+PTT-20250219-WA0023.opus,2025-02-19,23,28.94,راستہ بند ہے اس لیے دوسرے راستے سے جا رہے ہیں,Road is blocked so we are taking another route.,success
+PTT-20250221-WA0009.opus,2025-02-21,9,13.72,آکسیجن سلنڈر تقریباً خالی ہے,"The oxygen cylinder is nearly empty, we need a refill.",success
+PTT-20250223-WA0001.opus,2025-02-23,1,10.79,ہم نے مریض کو ایمبولینس میں شفٹ کر دیا ہے اور ہسپتال جا رہے ہیں,We have shifted the patient to the ambulance and are heading to the hospital.,success
+PTT-20250224-WA0006.opus,2025-02-24,6,8.61,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250225-WA0007.opus,2025-02-25,7,37.62,شاید ٹریننگ پیر کو ہو گی مجھے یقین نہیں,"Maybe the training will be on Monday, I am not sure.",success
+PTT-20250225-WA0011.opus,2025-02-25,11,39.15,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250226-WA0005.opus,2025-02-26,5,22.6,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250227-WA0003.opus,2025-02-27,3,17.52,مریض کو ایمرجنسی میں حوالے کر دیا ہے,The patient has been handed over at the emergency department.,success
+PTT-20250227-WA0011.opus,2025-02-27,11,36.45,ہم گھر پہنچ گئے ہیں مریض اب ٹھیک ہے,"We reached the house, the patient is stable now.",success
+PTT-20250227-WA0013.opus,2025-02-27,13,29.06,دوسری ٹیم بھیجیں یہ ایمرجنسی ہے,"Please send the second team, this is an emergency.",success
